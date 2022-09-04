@@ -7,7 +7,7 @@ public class TileGenerator : MonoBehaviour
     const string TILE_NAME_FORMAT = "tile[{0}][{1}]";
     const string ROW_NAME_FORMAT = "row[{0}]";
     // Start is called before the first frame update
-    [SerializeField]
+    //[SerializeField]
     GameObject tilePrefab;
     [SerializeField]
     int width;
@@ -78,18 +78,25 @@ public class TileGenerator : MonoBehaviour
     }
     void tileGenerate(){
          state = new GameObject("state");
+         int hillHeight = 0;
          for(int i = 0 ; i<depth ; i++){//set X location 2d
              GameObject row = new GameObject(string.Format(ROW_NAME_FORMAT,i));
              row.transform.parent = state.transform;
              row.transform.position = new Vector3(0,0,0);
              for(int j = 0 ; j<width ; j++){//set Y Location 2d  as Z axis
-                //for(int k = 0 ; k<height ; k++){// Ypos
-                    GameObject tile = new GameObject(string.Format(TILE_NAME_FORMAT,i,j));
-                    Vector3 tilePos = new Vector3 (i,0,j);
-                    tile.transform.SetParent(row.transform);
-                    tile.transform.localPosition = tilePos;
-                    Instantiate(tilePrefab,tile.transform.transform);
-                //}
+                    if(Random.Range(1,100)>=missTilePercentage){//check ignore percent on this tile to create on state 
+                        if(Random.Range(1,100)<=hillPercentage){//check generate percent create hill on this tile 
+                        hillHeight = Random.Range(1,height);//random hill size
+                    }
+                    for(int k = 0 ; k<=hillHeight ; k++){// Ypos
+                        GameObject tile = new GameObject(string.Format(TILE_NAME_FORMAT,i,j));
+                        Vector3 tilePos = new Vector3 (i,k,j);
+                        tile.transform.SetParent(row.transform);
+                        tile.transform.localPosition = tilePos;
+                        Instantiate(tilePrefab,tile.transform.transform);
+                    }
+                }
+                hillHeight = 0;
             }
         }
     }
