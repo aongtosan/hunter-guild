@@ -20,11 +20,29 @@ public class TileGenerator : MonoBehaviour
     [SerializeField]
     int missTilePercentage;
     
+    int widthOld;
+
+    int heightOld;
+   
+    int depthOld;
+   
+    int hillPercentageOld;
+   
+    int missTilePercentageOld;
+
+    GameObject state;
     //define depth = axis Z
     //define height = axis y
     //define width = axis x
+    List<GameObject> tileList;
     void Awake(){
+        tileList = new List<GameObject>();
         loadTileData();
+        widthOld = width;
+        heightOld = height;
+        depthOld = depth;
+        missTilePercentageOld =missTilePercentage;
+        hillPercentageOld = hillPercentage;
     }
     void loadTileData(){
          // tilePrefab = Resources.Load("Prefabs/Tiles/GrassLandtile") as GameObject ;
@@ -37,16 +55,29 @@ public class TileGenerator : MonoBehaviour
     }
     void Start()
     {
-       TileGenerate();
+       tileGenerate();
     }
-
+    bool detectChanges(){
+        if( !(width==widthOld && height==heightOld && depth == depthOld && missTilePercentage == missTilePercentageOld && hillPercentage == hillPercentageOld) )return true;
+        else return false;
+    }
     // Update is called once per frame
     void Update()
     {
-        
+        if(detectChanges()){
+            //tileGenerate();
+            Debug.Log("change");
+            widthOld = width;
+            heightOld = height;
+            depthOld = depth;
+            missTilePercentageOld =missTilePercentage;
+            hillPercentageOld = hillPercentage;
+            Destroy(state);
+            tileGenerate();
+        }
     }
-    void TileGenerate(){
-        GameObject state = new GameObject("state");
+    void tileGenerate(){
+         state = new GameObject("state");
          for(int i = 0 ; i<depth ; i++){//set X location 2d
              GameObject row = new GameObject(string.Format(ROW_NAME_FORMAT,i));
              row.transform.parent = state.transform;
