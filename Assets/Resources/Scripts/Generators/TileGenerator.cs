@@ -29,6 +29,19 @@ public class TileGenerator : MonoBehaviour
     int hillPercentageOld;
    
     int missTilePercentageOld;
+    public int Width{
+        set {width = value;}
+        get {return width;}
+    }
+    
+    public int Height{
+        set {height = value;}
+        get {return height;}
+    }
+     public int Depth{
+        set {depth = value;}
+        get {return depth;}
+    }
 
     GameObject state;
     //define depth = axis Z
@@ -45,13 +58,11 @@ public class TileGenerator : MonoBehaviour
         hillPercentageOld = hillPercentage;
     }
     void loadTileData(){
-         // tilePrefab = Resources.Load("Prefabs/Tiles/GrassLandtile") as GameObject ;
-        tilePrefab = Resources.Load("Prefabs/Tiles/tile") as GameObject ;
-        // if(Resources.Load("Prefabs/Tiles/GrassLandtile") as GameObject !=null){
-        //     tilePrefab = Resources.Load("Prefabs/Tiles/GrassLandtile") as GameObject ;
-        // }else{
-        //      tilePrefab = Resources.Load("Prefabs/Tiles/tile") as GameObject ;
-        // }
+        if(Resources.Load("Prefabs/Tiles/GrassLandtile") as GameObject !=null){
+            tilePrefab = Resources.Load("Prefabs/Tiles/GrassLandtile") as GameObject ;
+        }else{
+             tilePrefab = Resources.Load("Prefabs/Tiles/tile") as GameObject ;
+        }
     }
     void Start()
     {
@@ -84,9 +95,9 @@ public class TileGenerator : MonoBehaviour
              row.transform.parent = state.transform;
              row.transform.position = new Vector3(0,0,0);
              for(int j = 0 ; j<width ; j++){//set Y Location 2d  as Z axis
-                    if(Random.Range(1,100)>=missTilePercentage){//check ignore percent on this tile to create on state 
-                        if(Random.Range(1,100)<=hillPercentage){//check generate percent create hill on this tile 
-                        hillHeight = Random.Range(1,height);//random hill size
+                if(Random.Range(1,100)>=missTilePercentage){//check ignore percent on this tile to create on state 
+                    if(Random.Range(1,100)<=hillPercentage){//check generate percent create hill on this tile 
+                        hillHeight = Random.Range(0,height);//random hill size
                     }
                     for(int k = 0 ; k<=hillHeight ; k++){// Ypos
                         GameObject tile = new GameObject(string.Format(TILE_NAME_FORMAT,i,j));
@@ -100,4 +111,5 @@ public class TileGenerator : MonoBehaviour
             }
         }
     }
+    
 }
