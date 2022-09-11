@@ -58,8 +58,8 @@ public class TileGenerator : MonoBehaviour
         hillPercentageOld = hillPercentage;
     }
     void loadTileData(){
-        if(Resources.Load("Prefabs/Tiles/GrassLandtile") as GameObject !=null){
-            tilePrefab = Resources.Load("Prefabs/Tiles/GrassLandtile") as GameObject ;
+        if(Resources.Load("Prefabs/Tiles/DryLandtile") as GameObject !=null){
+            tilePrefab = Resources.Load("Prefabs/Tiles/DryLandtile") as GameObject ;
         }else{
              tilePrefab = Resources.Load("Prefabs/Tiles/tile") as GameObject ;
         }
