@@ -18,7 +18,8 @@ public class CameraController : MonoBehaviour
     void Update()
     {
         // transform.Translate( new Vector4(-tileGen.Width,3,tileGen.Height) ,Space.World);
-        // int camLoc =  Mathf.Max(tileGen.Width,tileGen.Depth,tileGen.Height);
-        transform.position = new Vector3 (0,tileGen.Depth,-tileGen.Width);
+        int camLoc =  Mathf.Max(tileGen.Width,tileGen.Depth,tileGen.Height);
+        transform.position = new Vector3 (-(camLoc-2),camLoc,-(camLoc-1));
+        FindObjectOfType<Camera>().orthographicSize =camLoc-1;
     }
 }

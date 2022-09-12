@@ -59,7 +59,7 @@ public class TileGenerator : MonoBehaviour
     }
     void loadTileData(){
         if(Resources.Load("Prefabs/Tiles/DryLandtile") as GameObject !=null){
-            tilePrefab = Resources.Load("Prefabs/Tiles/DryLandtile") as GameObject ;
+            tilePrefab = Resources.Load("Prefabs/Tiles/GrassFieldLandTile") as GameObject ;
         }else{
              tilePrefab = Resources.Load("Prefabs/Tiles/tile") as GameObject ;
         }
