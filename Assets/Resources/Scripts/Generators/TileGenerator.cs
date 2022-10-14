@@ -4,11 +4,12 @@ using UnityEngine;
 
 public class TileGenerator : MonoBehaviour
 {
-    const string TILE_NAME_FORMAT = "tile[{0}][{1}]";
     const string ROW_NAME_FORMAT = "row[{0}]";
     // Start is called before the first frame update
     //[SerializeField]
     GameObject tilePrefab;
+    GameObject tileSlopePrefab;
+    MappingTile map;
     [SerializeField]
     int width;
     [SerializeField]
@@ -19,7 +20,8 @@ public class TileGenerator : MonoBehaviour
     int hillPercentage;
     [SerializeField]
     int missTilePercentage;
-    
+     [SerializeField]
+    int slopeTilePercentage;
     int widthOld;
 
     int heightOld;
@@ -29,6 +31,7 @@ public class TileGenerator : MonoBehaviour
     int hillPercentageOld;
    
     int missTilePercentageOld;
+    int slopeTilePercentageOld;
     public int Width{
         set {width = value;}
         get {return width;}
@@ -58,9 +61,12 @@ public class TileGenerator : MonoBehaviour
         hillPercentageOld = hillPercentage;
     }
     void loadTileData(){
-        if(Resources.Load("Prefabs/Tiles/DryLandtile") as GameObject !=null){
+        if(Resources.Load("Prefabs/Tiles/GrassFieldLandTile") as GameObject !=null){
             tilePrefab = Resources.Load("Prefabs/Tiles/GrassFieldLandTile") as GameObject ;
-        }else{
+        }if(Resources.Load("Prefabs/Tiles/GrassFiieldSlopeTile") as GameObject !=null){
+            tileSlopePrefab = Resources.Load("Prefabs/Tiles/GrassFiieldSlopeTile") as GameObject ;
+        }
+        else{
              tilePrefab = Resources.Load("Prefabs/Tiles/tile") as GameObject ;
         }
     }
@@ -69,14 +75,19 @@ public class TileGenerator : MonoBehaviour
        tileGenerate();
     }
     bool detectChanges(){
-        if( !(width==widthOld && height==heightOld && depth == depthOld && missTilePercentage == missTilePercentageOld && hillPercentage == hillPercentageOld) )return true;
+        if( !(width==widthOld && 
+              height==heightOld && 
+              depth == depthOld && 
+              missTilePercentage == missTilePercentageOld &&
+              hillPercentage == hillPercentageOld && 
+              slopeTilePercentage == slopeTilePercentageOld
+              ) )return true;
         else return false;
     }
     // Update is called once per frame
     void Update()
     {
         if(detectChanges()){
-            //tileGenerate();
             Debug.Log("change");
             widthOld = width;
             heightOld = height;
@@ -87,6 +98,10 @@ public class TileGenerator : MonoBehaviour
             tileGenerate();
         }
     }
+   /* Generating a random map. */
+    /// <summary>
+    /// It creates a 2D array of tiles movement, and then instantiates a prefab for each tile
+    /// </summary>
     void tileGenerate(){
          state = new GameObject("state");
          int hillHeight = 0;
@@ -100,16 +115,24 @@ public class TileGenerator : MonoBehaviour
                         hillHeight = Random.Range(0,height);//random hill size
                     }
                     for(int k = 0 ; k<=hillHeight ; k++){// Ypos
-                        GameObject tile = new GameObject(string.Format(TILE_NAME_FORMAT,i,j));
+                        Tile tileInfo = new Tile();
+                        GameObject tile = new GameObject(string.Format(Tile.TILE_NAME_FORMAT,i,j));
                         Vector3 tilePos = new Vector3 (i,k,j);
                         tile.transform.SetParent(row.transform);
                         tile.transform.localPosition = tilePos;
                         Instantiate(tilePrefab,tile.transform.transform);
                     }
+                    // Vector2 id = new Vector2(i,j);
+                    // Tile tileInfo = new Tile();
+                    // tileInfo.Id = id;
                 }
                 hillHeight = 0;
             }
         }
+
     }
-    
+
+    public void generateSlopeTile(Tile tile){
+        
+    }  
 }
