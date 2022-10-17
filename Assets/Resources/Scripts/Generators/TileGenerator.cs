@@ -9,7 +9,16 @@ public class TileGenerator : MonoBehaviour
     //[SerializeField]
     GameObject tilePrefab;
     GameObject tileSlopePrefab;
+
+    enum Biom {
+        DEFAULT,
+        GRASSFIELDLAND
+    };
+
     MappingTile map;
+
+    [SerializeField]
+    Biom biom;
     [SerializeField]
     int width;
     [SerializeField]
@@ -22,8 +31,10 @@ public class TileGenerator : MonoBehaviour
     int missTilePercentage;
      [SerializeField]
     int slopeTilePercentage;
+    [SerializeField]
+    int halfTilePercentage;
     int widthOld;
-
+    Biom biomOld;
     int heightOld;
    
     int depthOld;
@@ -32,6 +43,7 @@ public class TileGenerator : MonoBehaviour
    
     int missTilePercentageOld;
     int slopeTilePercentageOld;
+    int halfTilePercentageOld;
     public int Width{
         set {width = value;}
         get {return width;}
@@ -57,8 +69,9 @@ public class TileGenerator : MonoBehaviour
         widthOld = width;
         heightOld = height;
         depthOld = depth;
-        missTilePercentageOld =missTilePercentage;
+        missTilePercentageOld = missTilePercentage;
         hillPercentageOld = hillPercentage;
+        map = new MappingTile();
     }
     void loadTileData(){
         if(Resources.Load("Prefabs/Tiles/GrassFieldLandTile") as GameObject !=null){
@@ -80,7 +93,8 @@ public class TileGenerator : MonoBehaviour
               depth == depthOld && 
               missTilePercentage == missTilePercentageOld &&
               hillPercentage == hillPercentageOld && 
-              slopeTilePercentage == slopeTilePercentageOld
+              slopeTilePercentage == slopeTilePercentageOld &&
+              halfTilePercentage == halfTilePercentageOld
               ) )return true;
         else return false;
     }
@@ -94,7 +108,10 @@ public class TileGenerator : MonoBehaviour
             depthOld = depth;
             missTilePercentageOld =missTilePercentage;
             hillPercentageOld = hillPercentage;
+            slopeTilePercentageOld = slopeTilePercentage;
+            halfTilePercentageOld = halfTilePercentage;
             Destroy(state);
+            map.mapping.Clear();
             tileGenerate();
         }
     }
@@ -105,6 +122,11 @@ public class TileGenerator : MonoBehaviour
     void tileGenerate(){
          state = new GameObject("state");
          int hillHeight = 0;
+         GameObject tile  = null ;
+        //  GameObject halfTilePrefab = Resources.Load("Prefabs/Tiles/tile") as GameObject ; test 
+        //  halfTilePrefab.transform.localScale = new Vector3(1f,0.5f,1f);
+        GameObject halfTilePrefab = Resources.Load("Prefabs/Tiles/GrassFieldLandHalfTile") as GameObject ;
+        // halfTilePrefab.transform.localScale = new Vector3(1f,1f,1f);
          for(int i = 0 ; i<depth ; i++){//set X location 2d
              GameObject row = new GameObject(string.Format(ROW_NAME_FORMAT,i));
              row.transform.parent = state.transform;
@@ -115,24 +137,34 @@ public class TileGenerator : MonoBehaviour
                         hillHeight = Random.Range(0,height);//random hill size
                     }
                     for(int k = 0 ; k<=hillHeight ; k++){// Ypos
-                        Tile tileInfo = new Tile();
-                        GameObject tile = new GameObject(string.Format(Tile.TILE_NAME_FORMAT,i,j));
+                        tile = new GameObject(string.Format(Tile.TILE_NAME_FORMAT,i,j));
                         Vector3 tilePos = new Vector3 (i,k,j);
                         tile.transform.SetParent(row.transform);
                         tile.transform.localPosition = tilePos;
                         Instantiate(tilePrefab,tile.transform.transform);
                     }
-                    // Vector2 id = new Vector2(i,j);
-                    // Tile tileInfo = new Tile();
-                    // tileInfo.Id = id;
+                     Vector2Int id = new Vector2Int(i,j);
+                     Tile tileInfo = new Tile();
+                     tileInfo.Id = id;
+                     map.mapping.Add(tileInfo.Id,tile);
+                     Debug.Log(map.mapping[tileInfo.Id].name);
                 }
                 hillHeight = 0;
             }
         }
+       /* Generating half tile slope. */
+        foreach(var v  in map.mapping ){
+                if(Random.Range(1,100) <= halfTilePercentage){
+                    Transform row = v.Value.transform.parent ;
+                    Vector2 id = v.Key;
+                    tile = new GameObject( string.Format(Tile.TILE_NAME_FORMAT,id.x,id.y) );
+                    tile.transform.SetParent(row);
+                    tile.transform.localPosition = (v.Value.transform.localPosition + new Vector3(0,0.75f,0) );
+                    Instantiate(halfTilePrefab,tile.transform.transform);
+                }            
+        }
 
     }
 
-    public void generateSlopeTile(Tile tile){
-        
-    }  
+    
 }

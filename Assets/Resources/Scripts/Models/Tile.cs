@@ -5,8 +5,8 @@ using UnityEngine;
 public class Tile
 {
     // Start is called before the first frame update
-   public  const string TILE_NAME_FORMAT = "tile[{0}][{1}]";
-   Vector2 id;
+   public const string TILE_NAME_FORMAT = "tile[{0}][{1}]";
+   Vector2Int id;
    int locationX;
    int locationY;
    int height;
@@ -22,7 +22,7 @@ public class Tile
         set{height = value;}
         get{ return height;}
    }
-   public Vector2 Id{
+   public Vector2Int Id{
         set{id = value;}
         get{ return id;}
    }

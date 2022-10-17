@@ -3,9 +3,9 @@ using UnityEngine;
 
 public class MappingTile
 {
-    Dictionary<Vector2,GameObject> mapping;
+    public Dictionary<Vector2Int,GameObject> mapping;
     public MappingTile(){
-        mapping = new Dictionary<Vector2, GameObject>();
+        mapping = new Dictionary<Vector2Int, GameObject>();
     }
-
+  
 }
