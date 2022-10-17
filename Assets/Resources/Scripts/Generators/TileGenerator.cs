@@ -4,11 +4,23 @@ using UnityEngine;
 
 public class TileGenerator : MonoBehaviour
 {
-    const string TILE_NAME_FORMAT = "tile[{0}][{1}]";
     const string ROW_NAME_FORMAT = "row[{0}]";
     // Start is called before the first frame update
     //[SerializeField]
     GameObject tilePrefab;
+    GameObject tileSlopePrefab;
+    GameObject tileHalfPrefab;
+    GameObject tileSlopeHalfPrefab;
+
+    enum Biom {
+        DEFAULT,
+        GRASSFIELDLAND
+    };
+
+    MappingTile map;
+
+    [SerializeField]
+    Biom biom;
     [SerializeField]
     int width;
     [SerializeField]
@@ -19,9 +31,12 @@ public class TileGenerator : MonoBehaviour
     int hillPercentage;
     [SerializeField]
     int missTilePercentage;
-    
+     [SerializeField]
+    int slopeTilePercentage;
+    [SerializeField]
+    int halfTilePercentage;
     int widthOld;
-
+    Biom biomOld;
     int heightOld;
    
     int depthOld;
@@ -29,6 +44,8 @@ public class TileGenerator : MonoBehaviour
     int hillPercentageOld;
    
     int missTilePercentageOld;
+    int slopeTilePercentageOld;
+    int halfTilePercentageOld;
     public int Width{
         set {width = value;}
         get {return width;}
@@ -50,18 +67,26 @@ public class TileGenerator : MonoBehaviour
     List<GameObject> tileList;
     void Awake(){
         tileList = new List<GameObject>();
-        loadTileData();
+        loadTileData(biom);
         widthOld = width;
         heightOld = height;
         depthOld = depth;
-        missTilePercentageOld =missTilePercentage;
+        missTilePercentageOld = missTilePercentage;
         hillPercentageOld = hillPercentage;
+        map = new MappingTile();
     }
-    void loadTileData(){
-        if(Resources.Load("Prefabs/Tiles/DryLandtile") as GameObject !=null){
+    void loadTileData(Biom biom){
+        if(biom == Biom.GRASSFIELDLAND){
+            tileHalfPrefab = Resources.Load("Prefabs/Tiles/GrassFieldLandHalfTile") as GameObject ;
             tilePrefab = Resources.Load("Prefabs/Tiles/GrassFieldLandTile") as GameObject ;
-        }else{
+            tileSlopeHalfPrefab =  Resources.Load("Prefabs/Tiles/GrassFiieldSlopeHalfTile") as GameObject ;
+            tileSlopePrefab = Resources.Load("Prefabs/Tiles/GrassFiieldSlopeTile") as GameObject ;
+        }
+        else{
              tilePrefab = Resources.Load("Prefabs/Tiles/tile") as GameObject ;
+             tileHalfPrefab = Resources.Load("Prefabs/Tiles/halfTile") as GameObject ;
+             tileSlopeHalfPrefab =  Resources.Load("Prefabs/Tiles/SlopeHalfTile") as GameObject ;
+             tileSlopePrefab = Resources.Load("Prefabs/Tiles/SlopeHalfTile") as GameObject ;
         }
     }
     void Start()
@@ -69,27 +94,47 @@ public class TileGenerator : MonoBehaviour
        tileGenerate();
     }
     bool detectChanges(){
-        if( !(width==widthOld && height==heightOld && depth == depthOld && missTilePercentage == missTilePercentageOld && hillPercentage == hillPercentageOld) )return true;
+        if( !(width == widthOld && 
+              height == heightOld && 
+              depth == depthOld && 
+              missTilePercentage == missTilePercentageOld &&
+              hillPercentage == hillPercentageOld && 
+              slopeTilePercentage == slopeTilePercentageOld &&
+              halfTilePercentage == halfTilePercentageOld &&
+              biom == biomOld
+              ) )return  true;
         else return false;
     }
     // Update is called once per frame
     void Update()
     {
         if(detectChanges()){
-            //tileGenerate();
             Debug.Log("change");
             widthOld = width;
             heightOld = height;
             depthOld = depth;
             missTilePercentageOld =missTilePercentage;
             hillPercentageOld = hillPercentage;
+            slopeTilePercentageOld = slopeTilePercentage;
+            halfTilePercentageOld = halfTilePercentage;
+            biomOld = biom;
             Destroy(state);
+            map.mapping.Clear();
+            loadTileData(biom);
             tileGenerate();
         }
     }
+   /* Generating a random map. */
+    /// <summary>
+    /// It creates a 2D array of tiles movement, and then instantiates a prefab for each tile
+    /// </summary>
     void tileGenerate(){
          state = new GameObject("state");
          int hillHeight = 0;
+         GameObject tile  = null ;
+        //  GameObject halfTilePrefab = Resources.Load("Prefabs/Tiles/tile") as GameObject ; test 
+        //  halfTilePrefab.transform.localScale = new Vector3(1f,0.5f,1f);
+        // halfTilePrefab.transform.localScale = new Vector3(1f,1f,1f);
          for(int i = 0 ; i<depth ; i++){//set X location 2d
              GameObject row = new GameObject(string.Format(ROW_NAME_FORMAT,i));
              row.transform.parent = state.transform;
@@ -100,16 +145,34 @@ public class TileGenerator : MonoBehaviour
                         hillHeight = Random.Range(0,height);//random hill size
                     }
                     for(int k = 0 ; k<=hillHeight ; k++){// Ypos
-                        GameObject tile = new GameObject(string.Format(TILE_NAME_FORMAT,i,j));
+                        tile = new GameObject(string.Format(Tile.TILE_NAME_FORMAT,i,j));
                         Vector3 tilePos = new Vector3 (i,k,j);
                         tile.transform.SetParent(row.transform);
                         tile.transform.localPosition = tilePos;
                         Instantiate(tilePrefab,tile.transform.transform);
                     }
+                     Vector2Int id = new Vector2Int(i,j);
+                     Tile tileInfo = new Tile();
+                     tileInfo.Id = id;
+                     map.mapping.Add(tileInfo.Id,tile);
+                     Debug.Log(map.mapping[tileInfo.Id].name);
                 }
                 hillHeight = 0;
             }
         }
+       /* Generating half tile slope. */
+        foreach(var v  in map.mapping ){
+                if(Random.Range(1,100) <= halfTilePercentage){
+                    Transform row = v.Value.transform.parent ;
+                    Vector2 id = v.Key;
+                    tile = new GameObject( string.Format(Tile.TILE_NAME_FORMAT,id.x,id.y) );
+                    tile.transform.SetParent(row);
+                    tile.transform.localPosition = (v.Value.transform.localPosition + new Vector3(0,0.75f,0) );
+                    Instantiate(tileHalfPrefab,tile.transform.transform);
+                }            
+        }
+
     }
+
     
 }
