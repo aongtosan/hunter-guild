@@ -9,6 +9,8 @@ public class TileGenerator : MonoBehaviour
     //[SerializeField]
     GameObject tilePrefab;
     GameObject tileSlopePrefab;
+    GameObject tileHalfPrefab;
+    GameObject tileSlopeHalfPrefab;
 
     enum Biom {
         DEFAULT,
@@ -65,7 +67,7 @@ public class TileGenerator : MonoBehaviour
     List<GameObject> tileList;
     void Awake(){
         tileList = new List<GameObject>();
-        loadTileData();
+        loadTileData(biom);
         widthOld = width;
         heightOld = height;
         depthOld = depth;
@@ -73,14 +75,18 @@ public class TileGenerator : MonoBehaviour
         hillPercentageOld = hillPercentage;
         map = new MappingTile();
     }
-    void loadTileData(){
-        if(Resources.Load("Prefabs/Tiles/GrassFieldLandTile") as GameObject !=null){
+    void loadTileData(Biom biom){
+        if(biom == Biom.GRASSFIELDLAND){
+            tileHalfPrefab = Resources.Load("Prefabs/Tiles/GrassFieldLandHalfTile") as GameObject ;
             tilePrefab = Resources.Load("Prefabs/Tiles/GrassFieldLandTile") as GameObject ;
-        }if(Resources.Load("Prefabs/Tiles/GrassFiieldSlopeTile") as GameObject !=null){
+            tileSlopeHalfPrefab =  Resources.Load("Prefabs/Tiles/GrassFiieldSlopeHalfTile") as GameObject ;
             tileSlopePrefab = Resources.Load("Prefabs/Tiles/GrassFiieldSlopeTile") as GameObject ;
         }
         else{
              tilePrefab = Resources.Load("Prefabs/Tiles/tile") as GameObject ;
+             tileHalfPrefab = Resources.Load("Prefabs/Tiles/halfTile") as GameObject ;
+             tileSlopeHalfPrefab =  Resources.Load("Prefabs/Tiles/SlopeHalfTile") as GameObject ;
+             tileSlopePrefab = Resources.Load("Prefabs/Tiles/SlopeHalfTile") as GameObject ;
         }
     }
     void Start()
@@ -88,14 +94,15 @@ public class TileGenerator : MonoBehaviour
        tileGenerate();
     }
     bool detectChanges(){
-        if( !(width==widthOld && 
-              height==heightOld && 
+        if( !(width == widthOld && 
+              height == heightOld && 
               depth == depthOld && 
               missTilePercentage == missTilePercentageOld &&
               hillPercentage == hillPercentageOld && 
               slopeTilePercentage == slopeTilePercentageOld &&
-              halfTilePercentage == halfTilePercentageOld
-              ) )return true;
+              halfTilePercentage == halfTilePercentageOld &&
+              biom == biomOld
+              ) )return  true;
         else return false;
     }
     // Update is called once per frame
@@ -110,8 +117,10 @@ public class TileGenerator : MonoBehaviour
             hillPercentageOld = hillPercentage;
             slopeTilePercentageOld = slopeTilePercentage;
             halfTilePercentageOld = halfTilePercentage;
+            biomOld = biom;
             Destroy(state);
             map.mapping.Clear();
+            loadTileData(biom);
             tileGenerate();
         }
     }
@@ -125,7 +134,6 @@ public class TileGenerator : MonoBehaviour
          GameObject tile  = null ;
         //  GameObject halfTilePrefab = Resources.Load("Prefabs/Tiles/tile") as GameObject ; test 
         //  halfTilePrefab.transform.localScale = new Vector3(1f,0.5f,1f);
-        GameObject halfTilePrefab = Resources.Load("Prefabs/Tiles/GrassFieldLandHalfTile") as GameObject ;
         // halfTilePrefab.transform.localScale = new Vector3(1f,1f,1f);
          for(int i = 0 ; i<depth ; i++){//set X location 2d
              GameObject row = new GameObject(string.Format(ROW_NAME_FORMAT,i));
@@ -160,7 +168,7 @@ public class TileGenerator : MonoBehaviour
                     tile = new GameObject( string.Format(Tile.TILE_NAME_FORMAT,id.x,id.y) );
                     tile.transform.SetParent(row);
                     tile.transform.localPosition = (v.Value.transform.localPosition + new Vector3(0,0.75f,0) );
-                    Instantiate(halfTilePrefab,tile.transform.transform);
+                    Instantiate(tileHalfPrefab,tile.transform.transform);
                 }            
         }
 
