@@ -1,13 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
-
 using UnityEngine;
-using UnityEngine.Events;
 
-public class Gamemanager : MonoBehaviour
+public class CombatManager : MonoBehaviour
 {
     // Start is called before the first frame update
-    public UnityEvent gameEvent;
     void Start()
     {
         
@@ -17,11 +14,5 @@ public class Gamemanager : MonoBehaviour
     void Update()
     {
         
-    }
-
-    enum GameState{
-        WORLD,
-        COMBAT,
-        BASE
     }
 }
