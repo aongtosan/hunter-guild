@@ -2,6 +2,7 @@ using System.Collections.Generic;
 
 public class PathFinding
 {
-    Tile tile;
-    List<Tile> state;
+    Tile startTile;
+    Tile endTile;
+    List<Tile> path;
 }
