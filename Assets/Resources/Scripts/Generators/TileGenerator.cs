@@ -32,6 +32,8 @@ public class TileGenerator : MonoBehaviour
     int slopeTilePercentage;
     [SerializeField]
     int halfTilePercentage;
+    [SerializeField]
+    bool change;
     int widthOld;
     Bioms.Biom biomOld;
     int heightOld;
@@ -43,6 +45,7 @@ public class TileGenerator : MonoBehaviour
     int missTilePercentageOld;
     int slopeTilePercentageOld;
     int halfTilePercentageOld;
+    bool changeOld;
     public int Width{
         set {width = value;}
         get {return width;}
@@ -104,7 +107,8 @@ public class TileGenerator : MonoBehaviour
               hillPercentage == hillPercentageOld && 
               slopeTilePercentage == slopeTilePercentageOld &&
               halfTilePercentage == halfTilePercentageOld &&
-              biom == biomOld
+              biom == biomOld &&
+              change==changeOld
               ) )return  true;
         else return false;
     }
@@ -121,6 +125,7 @@ public class TileGenerator : MonoBehaviour
             slopeTilePercentageOld = slopeTilePercentage;
             halfTilePercentageOld = halfTilePercentage;
             biomOld = biom;
+            changeOld= change;
             Destroy(state);
             map.mapping.Clear();
             loadTileData(biom);
