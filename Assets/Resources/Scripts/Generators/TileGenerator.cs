@@ -96,7 +96,7 @@ public class TileGenerator : MonoBehaviour
              tilePrefab = Resources.Load("Prefabs/Tiles/tile") as GameObject ;
              tileHalfPrefab = Resources.Load("Prefabs/Tiles/halfTile") as GameObject ;
              tileSlopeHalfPrefab =  Resources.Load("Prefabs/Tiles/SlopeHalfTile") as GameObject ;
-             tileSlopePrefab = Resources.Load("Prefabs/Tiles/SlopeHalfTile") as GameObject ;
+             tileSlopePrefab = Resources.Load("Prefabs/Tiles/SlopeTile") as GameObject ;
         }
     }
     bool detectChanges(){
@@ -184,7 +184,7 @@ public class TileGenerator : MonoBehaviour
                 } 
                 // Debug.Log(map.mapping[k].transform.tag);
         }
-        // Generate slope tile
+        // Generate slope half tile
         foreach(var k in keys){
             if( k.y+1<=width-1 && map.mapping[k].transform.tag.Equals("HalfTile") && !( map.mapping[k+new Vector2Int(0,1)].transform.tag.Equals("HalfTile"))) {
                  if(Random.Range(1,100) <= halfTilePercentage/2){
@@ -203,9 +203,9 @@ public class TileGenerator : MonoBehaviour
             }
            
         }
-        // Generate half slope tile
+        // Generate  slope tile
         foreach(var k in keys){
-            if( k.y+1<=width-1 && map.mapping[k].transform.tag.Equals("Tile") && !( map.mapping[k+new Vector2Int(0,1)].transform.tag.Equals("Tile")) && map.mapping[k].transform.position.y>0 ) {
+            if( k.y+1<=width-1 && map.mapping[k].transform.tag.Equals("Tile") && !( map.mapping[k+new Vector2Int(0,1)].transform.tag.Equals("Tile")) ) {
                     if(Random.Range(1,100) <= halfTilePercentage/2){
                         // if(k.y+1<=width-1){
                             Transform row = map.mapping[k+new Vector2Int(0,1)].transform.parent;
