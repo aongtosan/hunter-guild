@@ -205,21 +205,51 @@ public class TileGenerator : MonoBehaviour
         }
         // Generate  slope tile
         foreach(var k in keys){
-            if( k.y+1<=width-1 && map.mapping[k].transform.tag.Equals("Tile") && !( map.mapping[k+new Vector2Int(0,1)].transform.tag.Equals("Tile")) ) {
-                    if(Random.Range(1,100) <= halfTilePercentage/2){
-                        // if(k.y+1<=width-1){
-                            Transform row = map.mapping[k+new Vector2Int(0,1)].transform.parent;
-                            Debug.Log(map.mapping[k]);
-                            Vector2Int id = k+(new Vector2Int(0,1));
-                            tile = new GameObject( string.Format(Tile.TILE_NAME_FORMAT,id.x,id.y) );
-                            tile.transform.SetParent(row);
-                            tile.transform.localPosition = (map.mapping[id].transform.localPosition + new Vector3(0,0.75f,0) );
-                            tile.transform.tag = "SlopeTile";
-                            Instantiate(tileSlopePrefab,tile.transform.transform); 
-                            map.mapping[id] = tile;
+            
+        if(  (k.y+1<=width-1 && k.y-1>=0) && (k.x+1<=depth-1 && k.x-1>=0)  )
+            {
+                if(
+                        map.mapping[k].transform.tag.Equals("Tile") 
+                        &&
+                        (     
+                            map.mapping[k+new Vector2Int(0,1)].transform.tag.Equals("Tile") &&
+                            map.mapping[k+new Vector2Int(1,0)].transform.tag.Equals("Tile") &&
+                            map.mapping[k+new Vector2Int(0,-1)].transform.tag.Equals("Tile") &&
+                            map.mapping[k+new Vector2Int(-1,0)].transform.tag.Equals("Tile") &&
+                            map.mapping[k+new Vector2Int(1,1)].transform.tag.Equals("Tile") &&
+                            map.mapping[k+new Vector2Int(1,-1)].transform.tag.Equals("Tile") &&
+                            map.mapping[k+new Vector2Int(-1,1)].transform.tag.Equals("Tile") &&
+                            map.mapping[k+new Vector2Int(-1,-1)].transform.tag.Equals("Tile") 
+                        ) 
+                ){
+                                if(Random.Range(1,100) <= halfTilePercentage/2){
+                                    // if(k.y+1<=width-1){
+                                        if(
+                                            map.mapping[k+new Vector2Int(0,1)].transform.position.y>0 ||
+                                            map.mapping[k+new Vector2Int(1,0)].transform.position.y>0 ||
+                                            map.mapping[k+new Vector2Int(0,-1)].transform.position.y>0  ||
+                                            map.mapping[k+new Vector2Int(-1,0)].transform.position.y>0  ||
+                                            map.mapping[k+new Vector2Int(1,1)].transform.position.y>0 ||
+                                            map.mapping[k+new Vector2Int(1,-1)].transform.position.y>0 ||
+                                            map.mapping[k+new Vector2Int(-1,1)].transform.position.y>0 ||
+                                            map.mapping[k+new Vector2Int(-1,-1)].transform.position.y>0
+                                        ){
+                                                Transform row = map.mapping[k+new Vector2Int(0,1)].transform.parent;
+                                                Debug.Log(map.mapping[k]);
+                                                Vector2Int id = k+(new Vector2Int(0,1));
+                                                tile = new GameObject( string.Format(Tile.TILE_NAME_FORMAT,id.x,id.y) );
+                                                tile.transform.SetParent(row);
+                                                tile.transform.localPosition = (map.mapping[id].transform.localPosition + new Vector3(0,1f,0) );
+                                                tile.transform.tag = "SlopeTile";
+                                                Instantiate(tileSlopePrefab,tile.transform.transform); 
+                                                map.mapping[id] = tile;
+                                        }
+                                        
+                                    }
                         }
+                    }
             }
-        }
+            
 
     }
     public MappingTile getMappingTile(){
