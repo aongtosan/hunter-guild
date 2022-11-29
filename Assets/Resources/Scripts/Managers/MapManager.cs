@@ -8,6 +8,7 @@ public class MapManager : MonoBehaviour
 
     [SerializeField]
     TileGenerator tileEngine;
+    public MouseController mouseController;
     void Start()
     {
     //    foreach(var m in tileEngine.getMappingTile().mapping){

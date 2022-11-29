@@ -199,7 +199,22 @@ public class TileGenerator : MonoBehaviour
                         Instantiate(tileSlopeHalfPrefab,tile.transform.transform); 
                         map.mapping[id] = tile;
                     }
-                // } 
+              if(k.x+1<=depth-1 && map.mapping[k].transform.tag.Equals("HalfTile") && !( map.mapping[k+new Vector2Int(1,0)].transform.tag.Equals("HalfTile"))){
+                 if(Random.Range(1,100) <= halfTilePercentage/2){
+                    // if(k.y+1<=width-1){
+                        Transform row = map.mapping[k+new Vector2Int(1,0)].transform.parent;
+                        Debug.Log(map.mapping[k]);
+                        Vector2Int id = k+(new Vector2Int(1,0));
+                        tile = new GameObject( string.Format(Tile.TILE_NAME_FORMAT,id.x,id.y) );
+                        tile.transform.SetParent(row);
+                        tile.transform.localPosition = (map.mapping[id].transform.localPosition + new Vector3(0,0.75f,0) );
+                        tile.transform.tag = "SlopeTile";
+                        
+                        Instantiate(tileSlopeHalfPrefab,tile.transform.transform); 
+                        tile.transform.GetChild(0).transform.Rotate(0.0f, 90.0f, 0.0f, Space.World);
+                        map.mapping[id] = tile;
+                    }
+              }
             }
            
         }

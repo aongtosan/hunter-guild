@@ -21,5 +21,16 @@ public class CameraController : MonoBehaviour
         int camLoc =  Mathf.Max(tileGen.Width,tileGen.Depth,tileGen.Height);
         transform.position = new Vector3 (-(camLoc-2),camLoc,-(camLoc-1));
         FindObjectOfType<Camera>().orthographicSize =camLoc-1;
+        changeRotation();
+
+
+    }
+    void changeRotation(){
+        if(Input.GetKey(KeyCode.Q)){
+
+        }
+        if(Input.GetKey(KeyCode.E)){
+
+        }
     }
 }
