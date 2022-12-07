@@ -11,6 +11,7 @@ public class TileGenerator : MonoBehaviour
     GameObject tileSlopePrefab;
     GameObject tileHalfPrefab;
     GameObject tileSlopeHalfPrefab;
+    GameObject tileSubPrefab;
 
   
 
@@ -45,6 +46,7 @@ public class TileGenerator : MonoBehaviour
     int missTilePercentageOld;
     int slopeTilePercentageOld;
     int halfTilePercentageOld;
+
     bool changeOld;
     public int Width{
         set {width = value;}
@@ -91,12 +93,14 @@ public class TileGenerator : MonoBehaviour
             tilePrefab = Resources.Load("Prefabs/Tiles/GrassFieldLandTile") as GameObject ;
             tileSlopeHalfPrefab =  Resources.Load("Prefabs/Tiles/GrassFiieldSlopeHalfTile") as GameObject ;
             tileSlopePrefab = Resources.Load("Prefabs/Tiles/GrassFiieldSlopeTile") as GameObject ;
+            tileSubPrefab = Resources.Load("Prefabs/Tiles/GrassFiieldSubTile") as GameObject ;
         }
         else{
              tilePrefab = Resources.Load("Prefabs/Tiles/tile") as GameObject ;
              tileHalfPrefab = Resources.Load("Prefabs/Tiles/halfTile") as GameObject ;
              tileSlopeHalfPrefab =  Resources.Load("Prefabs/Tiles/SlopeHalfTile") as GameObject ;
              tileSlopePrefab = Resources.Load("Prefabs/Tiles/SlopeTile") as GameObject ;
+             tileSubPrefab = Resources.Load("Prefabs/Tiles/tile") as GameObject ;
         }
     }
     bool detectChanges(){
@@ -153,12 +157,21 @@ public class TileGenerator : MonoBehaviour
                         hillHeight = Random.Range(hillPercentage==100 ? 1 : 0 ,height);//random hill size
                     }
                     for(int k = 0 ; k<=hillHeight ; k++){// Ypos
-                        tile = new GameObject(string.Format(Tile.TILE_NAME_FORMAT,i,j));
-                        Vector3 tilePos = new Vector3 (i,k,j);
-                        tile.transform.SetParent(row.transform);
-                        tile.transform.localPosition = tilePos;
-                        tile.transform.tag = "Tile";
-                        Instantiate(tilePrefab,tile.transform.transform);
+                        if( k==0 || k== hillHeight){
+                                tile = new GameObject(string.Format(Tile.TILE_NAME_FORMAT,i,j));
+                                Vector3 tilePos = new Vector3 (i,k,j);
+                                tile.transform.SetParent(row.transform);
+                                tile.transform.localPosition = tilePos;
+                                tile.transform.tag = "Tile";
+                                Instantiate(tilePrefab,tile.transform.transform);
+                        }else{
+                                tile = new GameObject(string.Format(Tile.TILE_NAME_FORMAT,i,j));
+                                Vector3 tilePos = new Vector3 (i,k,j);
+                                tile.transform.SetParent(row.transform);
+                                tile.transform.localPosition = tilePos;
+                                tile.transform.tag = "Tile";
+                                Instantiate(tileSubPrefab,tile.transform.transform);
+                        }
                     }
                      Vector2Int id = new Vector2Int(i,j);
                      Tile tileInfo = new Tile();
