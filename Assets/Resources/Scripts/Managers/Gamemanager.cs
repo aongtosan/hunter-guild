@@ -11,9 +11,14 @@ public class Gamemanager : MonoBehaviour
     public UnityEvent gameEvent;
     public MapManager mapManage;
     public CombatManager combatManage;
-    private GameState state;
+    public GameState state;
 
-    private GameState State { get => state; set => state = value; }
+     public enum GameState{
+        ONSTARTGAME,
+        WORLD,
+        COMBAT,
+        BASE
+    }
 
     // public MouseController mouseControll; 
     void Awake(){
@@ -26,18 +31,35 @@ public class Gamemanager : MonoBehaviour
     }
     public void gameStart(){
         Debug.Log("Game Start");
-        SceneManager.LoadScene("TileEngineTest");
+
+        // SceneManager.LoadScene("TileEngineTest");
     }
     // Update is called once per frame
     void Update()
     {
-        
+        switch(state){
+
+            case  GameState.ONSTARTGAME : {
+                state = GameState.WORLD;
+                break;
+            } 
+            case  GameState.WORLD : {
+                SceneManager.LoadScene("WorldMapTest");
+                break;
+            } 
+            case  GameState.BASE : {
+                
+                break;
+            } 
+            case  GameState.COMBAT : {
+                
+                break;
+            }
+            default : break;
+
+            
+        }
+    }
     }
 
-    public enum GameState{
-        ONSTARTGAME,
-        WORLD,
-        COMBAT,
-        BASE
-    }
-}
+
