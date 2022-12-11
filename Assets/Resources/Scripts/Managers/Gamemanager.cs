@@ -45,6 +45,7 @@ public class Gamemanager : MonoBehaviour
             } 
             case  GameState.WORLD : {
                 SceneManager.LoadScene("WorldMapTest");
+                //if(change location)
                 break;
             } 
             case  GameState.BASE : {

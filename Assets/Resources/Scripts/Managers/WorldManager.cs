@@ -15,4 +15,7 @@ public class WorldManager : MonoBehaviour
     {
         
     }
+    public bool isOnWorldMap(){
+        return true;
+    }
 }
