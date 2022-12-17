@@ -13,6 +13,7 @@ public class Gamemanager : MonoBehaviour
     public CombatManager combatManage;
     public GameState state;
 
+    GameState saveState;
      public enum GameState{
         ONSTARTGAME,
         WORLD,
@@ -23,6 +24,7 @@ public class Gamemanager : MonoBehaviour
     // public MouseController mouseControll; 
     void Awake(){
        state = GameState.ONSTARTGAME;
+       saveState = GameState.ONSTARTGAME;
     }
     void Start()
     {
@@ -31,19 +33,23 @@ public class Gamemanager : MonoBehaviour
     }
     public void gameStart(){
         Debug.Log("Game Start");
+        state=GameState.WORLD;
 
         // SceneManager.LoadScene("TileEngineTest");
     }
     // Update is called once per frame
     void Update()
     {
+        if(saveState!=state)
         switch(state){
 
             case  GameState.ONSTARTGAME : {
-                state = GameState.WORLD;
+                SceneManager.LoadScene("SquenceGameTest");
+                // state = GameState.WORLD;
                 break;
             } 
             case  GameState.WORLD : {
+                saveState =GameState.WORLD;
                 SceneManager.LoadScene("WorldMapTest");
                 //if(change location)
                 break;
