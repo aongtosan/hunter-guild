@@ -8,12 +8,13 @@ using UnityEngine.SceneManagement;
 public class Gamemanager : MonoBehaviour
 {
     // Start is called before the first frame update
+    public static Gamemanager instance;
     public UnityEvent gameEvent;
     public MapManager mapManage;
     public CombatManager combatManage;
-    public GameState state;
+    public  GameState state;
 
-    GameState saveState;
+    public  GameState saveState;
      public enum GameState{
         ONSTARTGAME,
         WORLD,
@@ -23,14 +24,12 @@ public class Gamemanager : MonoBehaviour
 
     // public MouseController mouseControll; 
     void Awake(){
-       state = GameState.ONSTARTGAME;
-       saveState = GameState.ONSTARTGAME;
+        instance =this;
+        state = GameState.ONSTARTGAME;
+        saveState = GameState.ONSTARTGAME;
+        DontDestroyOnLoad(this);
     }
-    void Start()
-    {
-        
-        // SceneManager.LoadScene(scenePaths[0], LoadSceneMode.Single);
-    }
+
     public void gameStart(){
         Debug.Log("Game Start");
         state=GameState.WORLD;
@@ -45,12 +44,13 @@ public class Gamemanager : MonoBehaviour
 
             case  GameState.ONSTARTGAME : {
                 SceneManager.LoadScene("SquenceGameTest");
-                // state = GameState.WORLD;
+                state = GameState.WORLD;
                 break;
             } 
             case  GameState.WORLD : {
                 saveState =GameState.WORLD;
                 SceneManager.LoadScene("WorldMapTest");
+        
                 //if(change location)
                 break;
             } 
@@ -59,7 +59,8 @@ public class Gamemanager : MonoBehaviour
                 break;
             } 
             case  GameState.COMBAT : {
-                
+                saveState=GameState.COMBAT;
+                SceneManager.LoadScene("TileEngineTest");
                 break;
             }
             default : break;

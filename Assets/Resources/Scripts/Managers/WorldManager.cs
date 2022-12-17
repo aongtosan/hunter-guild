@@ -2,38 +2,40 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 
-public class WorldManager : MonoBehaviour , IPointerClickHandler ,IPointerDownHandler, IPointerUpHandler
-{
+public class WorldManager : MonoBehaviour{
     // Start is called before the first frame update
-    bool isOnWorldMap;
-    public WorldManager worldManager;
-    void Start()
-    {
-        isOnWorldMap =true;
+    
+    public static WorldManager instance;
+    public Behaviour uiCanvas;
+     void Awake(){
+        instance =this;
+       
     }
+    // void Start()
+    // {
+    //     isOnWorldMap =true;
+    // }
 
     // Update is called once per frame
     void Update()
     {
+        if(Input.GetMouseButtonDown(1)){
+            uiCanvas.enabled = !uiCanvas.enabled;
+            Debug.Log("clicked");
+        }
         // Debug.Log(isOnWorldMap);
     }
-    public void OnPointerClick(PointerEventData pointerEventData)
-    {
-        //Output to console the clicked GameObject's name and the following message. You can replace this with your own actions for when clicking the GameObject.
-        Debug.Log(name + " Game Object Clicked!");
-    }
-    public bool isOnWorldMapCheck(){
-        return isOnWorldMap;
-    }
+    public void enterMap(){
+        
+         Debug.Log("enter map "+Gamemanager.instance.state);
+         Gamemanager.instance.state = Gamemanager.GameState.COMBAT;
+         Debug.Log("enter map "+Gamemanager.instance.state);
+         SceneManager.LoadScene("SquenceGameTest");
+    } 
 
-    public void OnPointerUp(PointerEventData eventData)
-    {
-        // throw new System.NotImplementedException();
-    }
 
-    public void OnPointerDown(PointerEventData eventData)
-    {
-        // throw new System.NotImplementedException();
-    }
+    //Detect if clicks are no longer registering
+
 }
