@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class TileGenerator : MonoBehaviour
 {
+    public static TileGenerator tileGenerator;
     const string ROW_NAME_FORMAT = "row[{0}]";
     // Start is called before the first frame update
     //[SerializeField]
@@ -73,6 +74,7 @@ public class TileGenerator : MonoBehaviour
 /// the tiles.
 /// </summary>
     void Awake(){
+        tileGenerator = this;
         tileList = new List<GameObject>();
         loadTileData(biom);
         widthOld = width;
@@ -103,7 +105,7 @@ public class TileGenerator : MonoBehaviour
              tileSubPrefab = Resources.Load("Prefabs/Tiles/tile") as GameObject ;
         }
     }
-    bool detectChanges(){
+    public bool detectChanges(){
         if( !(width == widthOld && 
               height == heightOld && 
               depth == depthOld && 

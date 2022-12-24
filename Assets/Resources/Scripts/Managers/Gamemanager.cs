@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 
 public class Gamemanager : MonoBehaviour
 {
-    // Start is called before the first frame update
+    
     public static Gamemanager instance;
     public UnityEvent gameEvent;
     public MapManager mapManage;
@@ -60,7 +60,7 @@ public class Gamemanager : MonoBehaviour
             } 
             case  GameState.COMBAT : {
                 saveState=GameState.COMBAT;
-                SceneManager.LoadScene("TileEngineTest");
+                SceneManager.LoadScene("CombatSceneTest");
                 break;
             }
             default : break;

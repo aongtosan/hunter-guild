@@ -24,6 +24,7 @@ public class WorldManager : MonoBehaviour{
         if(Input.GetMouseButtonDown(1)){
             uiCanvas.enabled = !uiCanvas.enabled;
             Debug.Log("clicked");
+            Debug.Log(Input.mousePosition);
         }
         // Debug.Log(isOnWorldMap);
     }
