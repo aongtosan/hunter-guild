@@ -133,6 +133,7 @@ GameObject:
   m_Component:
   - component: {fileID: 278253964}
   - component: {fileID: 278253965}
+  - component: {fileID: 278253966}
   m_Layer: 0
   m_Name: TileGenerator
   m_TagString: Untagged
@@ -167,14 +168,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e849050f3a7997e4d8ee8f5f5e5e2eff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  biom: 0
-  width: 3
-  height: 0
-  depth: 3
-  hillPercentage: 0
+  biom: 1
+  width: 6
+  height: 3
+  depth: 6
+  hillPercentage: 20
   missTilePercentage: 0
-  slopeTilePercentage: 0
+  slopeTilePercentage: 20
   halfTilePercentage: 20
+  change: 0
+--- !u!114 &278253966
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 278253962}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a44b03307106ed546a63d8f0030839f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tileEngine: {fileID: 278253965}
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -210,7 +225,7 @@ Light:
   m_InnerSpotAngle: 21.80208
   m_CookieSize: 10
   m_Shadows:
-    m_Type: 0
+    m_Type: 2
     m_Resolution: -1
     m_CustomResolution: -1
     m_Strength: 1

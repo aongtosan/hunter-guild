@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class TileGenerator : MonoBehaviour
 {
+    public static TileGenerator tileGenerator;
     const string ROW_NAME_FORMAT = "row[{0}]";
     // Start is called before the first frame update
     //[SerializeField]
@@ -11,6 +12,7 @@ public class TileGenerator : MonoBehaviour
     GameObject tileSlopePrefab;
     GameObject tileHalfPrefab;
     GameObject tileSlopeHalfPrefab;
+    GameObject tileSubPrefab;
 
   
 
@@ -32,6 +34,8 @@ public class TileGenerator : MonoBehaviour
     int slopeTilePercentage;
     [SerializeField]
     int halfTilePercentage;
+    [SerializeField]
+    bool change;
     int widthOld;
     Bioms.Biom biomOld;
     int heightOld;
@@ -43,6 +47,8 @@ public class TileGenerator : MonoBehaviour
     int missTilePercentageOld;
     int slopeTilePercentageOld;
     int halfTilePercentageOld;
+
+    bool changeOld;
     public int Width{
         set {width = value;}
         get {return width;}
@@ -68,6 +74,7 @@ public class TileGenerator : MonoBehaviour
 /// the tiles.
 /// </summary>
     void Awake(){
+        tileGenerator = this;
         tileList = new List<GameObject>();
         loadTileData(biom);
         widthOld = width;
@@ -88,15 +95,17 @@ public class TileGenerator : MonoBehaviour
             tilePrefab = Resources.Load("Prefabs/Tiles/GrassFieldLandTile") as GameObject ;
             tileSlopeHalfPrefab =  Resources.Load("Prefabs/Tiles/GrassFiieldSlopeHalfTile") as GameObject ;
             tileSlopePrefab = Resources.Load("Prefabs/Tiles/GrassFiieldSlopeTile") as GameObject ;
+            tileSubPrefab = Resources.Load("Prefabs/Tiles/GrassFiieldSubTile") as GameObject ;
         }
         else{
              tilePrefab = Resources.Load("Prefabs/Tiles/tile") as GameObject ;
              tileHalfPrefab = Resources.Load("Prefabs/Tiles/halfTile") as GameObject ;
              tileSlopeHalfPrefab =  Resources.Load("Prefabs/Tiles/SlopeHalfTile") as GameObject ;
-             tileSlopePrefab = Resources.Load("Prefabs/Tiles/SlopeHalfTile") as GameObject ;
+             tileSlopePrefab = Resources.Load("Prefabs/Tiles/SlopeTile") as GameObject ;
+             tileSubPrefab = Resources.Load("Prefabs/Tiles/tile") as GameObject ;
         }
     }
-    bool detectChanges(){
+    public bool detectChanges(){
         if( !(width == widthOld && 
               height == heightOld && 
               depth == depthOld && 
@@ -104,7 +113,8 @@ public class TileGenerator : MonoBehaviour
               hillPercentage == hillPercentageOld && 
               slopeTilePercentage == slopeTilePercentageOld &&
               halfTilePercentage == halfTilePercentageOld &&
-              biom == biomOld
+              biom == biomOld &&
+              change==changeOld
               ) )return  true;
         else return false;
     }
@@ -121,6 +131,7 @@ public class TileGenerator : MonoBehaviour
             slopeTilePercentageOld = slopeTilePercentage;
             halfTilePercentageOld = halfTilePercentage;
             biomOld = biom;
+            changeOld= change;
             Destroy(state);
             map.mapping.Clear();
             loadTileData(biom);
@@ -148,12 +159,21 @@ public class TileGenerator : MonoBehaviour
                         hillHeight = Random.Range(hillPercentage==100 ? 1 : 0 ,height);//random hill size
                     }
                     for(int k = 0 ; k<=hillHeight ; k++){// Ypos
-                        tile = new GameObject(string.Format(Tile.TILE_NAME_FORMAT,i,j));
-                        Vector3 tilePos = new Vector3 (i,k,j);
-                        tile.transform.SetParent(row.transform);
-                        tile.transform.localPosition = tilePos;
-                        tile.transform.tag = "Tile";
-                        Instantiate(tilePrefab,tile.transform.transform);
+                        if( k==0 || k== hillHeight){
+                                tile = new GameObject(string.Format(Tile.TILE_NAME_FORMAT,i,j));
+                                Vector3 tilePos = new Vector3 (i,k,j);
+                                tile.transform.SetParent(row.transform);
+                                tile.transform.localPosition = tilePos;
+                                tile.transform.tag = "Tile";
+                                Instantiate(tilePrefab,tile.transform.transform);
+                        }else{
+                                tile = new GameObject(string.Format(Tile.TILE_NAME_FORMAT,i,j));
+                                Vector3 tilePos = new Vector3 (i,k,j);
+                                tile.transform.SetParent(row.transform);
+                                tile.transform.localPosition = tilePos;
+                                tile.transform.tag = "Tile";
+                                Instantiate(tileSubPrefab,tile.transform.transform);
+                        }
                     }
                      Vector2Int id = new Vector2Int(i,j);
                      Tile tileInfo = new Tile();
@@ -179,7 +199,7 @@ public class TileGenerator : MonoBehaviour
                 } 
                 // Debug.Log(map.mapping[k].transform.tag);
         }
-        // Generate slope tile
+        // Generate slope half tile
         foreach(var k in keys){
             if( k.y+1<=width-1 && map.mapping[k].transform.tag.Equals("HalfTile") && !( map.mapping[k+new Vector2Int(0,1)].transform.tag.Equals("HalfTile"))) {
                  if(Random.Range(1,100) <= halfTilePercentage/2){
@@ -194,27 +214,72 @@ public class TileGenerator : MonoBehaviour
                         Instantiate(tileSlopeHalfPrefab,tile.transform.transform); 
                         map.mapping[id] = tile;
                     }
-                // } 
+              if(k.x+1<=depth-1 && map.mapping[k].transform.tag.Equals("HalfTile") && !( map.mapping[k+new Vector2Int(1,0)].transform.tag.Equals("HalfTile"))){
+                 if(Random.Range(1,100) <= halfTilePercentage/2){
+                    // if(k.y+1<=width-1){
+                        Transform row = map.mapping[k+new Vector2Int(1,0)].transform.parent;
+                        Debug.Log(map.mapping[k]);
+                        Vector2Int id = k+(new Vector2Int(1,0));
+                        tile = new GameObject( string.Format(Tile.TILE_NAME_FORMAT,id.x,id.y) );
+                        tile.transform.SetParent(row);
+                        tile.transform.localPosition = (map.mapping[id].transform.localPosition + new Vector3(0,0.75f,0) );
+                        tile.transform.tag = "SlopeTile";
+                        
+                        Instantiate(tileSlopeHalfPrefab,tile.transform.transform); 
+                        tile.transform.GetChild(0).transform.Rotate(0.0f, 90.0f, 0.0f, Space.World);
+                        map.mapping[id] = tile;
+                    }
+              }
             }
            
         }
-        // Generate half slope tile
+        // Generate  slope tile
         foreach(var k in keys){
-            if( k.y+1<=width-1 && map.mapping[k].transform.tag.Equals("Tile") && !( map.mapping[k+new Vector2Int(0,1)].transform.tag.Equals("Tile")) && map.mapping[k].transform.position.y>0 ) {
-                    if(Random.Range(1,100) <= halfTilePercentage/2){
-                        // if(k.y+1<=width-1){
-                            Transform row = map.mapping[k+new Vector2Int(0,1)].transform.parent;
-                            Debug.Log(map.mapping[k]);
-                            Vector2Int id = k+(new Vector2Int(0,1));
-                            tile = new GameObject( string.Format(Tile.TILE_NAME_FORMAT,id.x,id.y) );
-                            tile.transform.SetParent(row);
-                            tile.transform.localPosition = (map.mapping[id].transform.localPosition + new Vector3(0,0.75f,0) );
-                            tile.transform.tag = "SlopeTile";
-                            Instantiate(tileSlopePrefab,tile.transform.transform); 
-                            map.mapping[id] = tile;
+            
+        if(  (k.y+1<=width-1 && k.y-1>=0) && (k.x+1<=depth-1 && k.x-1>=0)  )
+            {
+                if(
+                        map.mapping[k].transform.tag.Equals("Tile") 
+                        &&
+                        (     
+                            map.mapping[k+new Vector2Int(0,1)].transform.tag.Equals("Tile") &&
+                            map.mapping[k+new Vector2Int(1,0)].transform.tag.Equals("Tile") &&
+                            map.mapping[k+new Vector2Int(0,-1)].transform.tag.Equals("Tile") &&
+                            map.mapping[k+new Vector2Int(-1,0)].transform.tag.Equals("Tile") &&
+                            map.mapping[k+new Vector2Int(1,1)].transform.tag.Equals("Tile") &&
+                            map.mapping[k+new Vector2Int(1,-1)].transform.tag.Equals("Tile") &&
+                            map.mapping[k+new Vector2Int(-1,1)].transform.tag.Equals("Tile") &&
+                            map.mapping[k+new Vector2Int(-1,-1)].transform.tag.Equals("Tile") 
+                        ) 
+                ){
+                                if(Random.Range(1,100) <= halfTilePercentage/2){
+                                    // if(k.y+1<=width-1){
+                                        if(
+                                            map.mapping[k+new Vector2Int(0,1)].transform.position.y>0 ||
+                                            map.mapping[k+new Vector2Int(1,0)].transform.position.y>0 ||
+                                            map.mapping[k+new Vector2Int(0,-1)].transform.position.y>0  ||
+                                            map.mapping[k+new Vector2Int(-1,0)].transform.position.y>0  ||
+                                            map.mapping[k+new Vector2Int(1,1)].transform.position.y>0 ||
+                                            map.mapping[k+new Vector2Int(1,-1)].transform.position.y>0 ||
+                                            map.mapping[k+new Vector2Int(-1,1)].transform.position.y>0 ||
+                                            map.mapping[k+new Vector2Int(-1,-1)].transform.position.y>0
+                                        ){
+                                                Transform row = map.mapping[k+new Vector2Int(0,1)].transform.parent;
+                                                Debug.Log(map.mapping[k]);
+                                                Vector2Int id = k+(new Vector2Int(0,1));
+                                                tile = new GameObject( string.Format(Tile.TILE_NAME_FORMAT,id.x,id.y) );
+                                                tile.transform.SetParent(row);
+                                                tile.transform.localPosition = (map.mapping[id].transform.localPosition + new Vector3(0,1f,0) );
+                                                tile.transform.tag = "SlopeTile";
+                                                Instantiate(tileSlopePrefab,tile.transform.transform); 
+                                                map.mapping[id] = tile;
+                                        }
+                                        
+                                    }
                         }
+                    }
             }
-        }
+            
 
     }
     public MappingTile getMappingTile(){
