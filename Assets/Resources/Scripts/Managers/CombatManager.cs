@@ -6,7 +6,11 @@ public class CombatManager : MonoBehaviour
 {
     // Start is called before the first frame update
     public static CombatManager combatManager;
-    
+    bool isCombatEnd;
+    public bool IsCombatEnd{
+        set {isCombatEnd = value;}
+        get {return isCombatEnd ;}
+    }
     void Awake(){
         combatManager =this;
     }

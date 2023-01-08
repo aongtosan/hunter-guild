@@ -8,6 +8,11 @@ public class WorldManager : MonoBehaviour{
     // Start is called before the first frame update
     
     public static WorldManager instance;
+    bool isOnWorldMap;
+    public bool IsOnWorldMap{
+        set{isOnWorldMap =value;}
+        get{return isOnWorldMap; }
+    }
     public Behaviour uiCanvas;
      void Awake(){
         instance =this;
