@@ -6,6 +6,14 @@ public class CombatManager : MonoBehaviour
 {
     // Start is called before the first frame update
     public static CombatManager combatManager;
+    List<GameObject> unitList;
+    List<GameObject> enemyList;
+    public Tile selectedTile;
+    enum CombatPhase{
+        DEPLOY,
+        PLAYER,
+        OPPONENT
+    }
     bool isCombatEnd;
     public bool IsCombatEnd{
         set {isCombatEnd = value;}

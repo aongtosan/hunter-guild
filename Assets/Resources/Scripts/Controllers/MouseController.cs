@@ -5,7 +5,12 @@ using UnityEngine;
 public class MouseController : MonoBehaviour
 {
     // Start is called before the first frame update
+    public static MouseController mouseController;
+    
     Vector3 mouseLocationOld;
+    void Awake(){
+        mouseController = this ;
+    }
     void Start()
     {
         mouseLocationOld =  Input.mousePosition;
