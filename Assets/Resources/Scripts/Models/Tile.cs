@@ -30,7 +30,10 @@ public class Tile
    public Tile(){
 
    }
-   public Tile(Vector2Int id){
+   public Tile(Vector2Int id,int height){
      this.Id =id;
+     this.LocationX=id.x;
+     this.locationY=id.y;
+     this.Height=height;
    }
 }

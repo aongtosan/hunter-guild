@@ -25,13 +25,14 @@ public class CombatManager : MonoBehaviour
     void Start()
     {
         TileGenerator.tileGenerator.Width =6;
-        TileGenerator.tileGenerator.Height=6;
+        TileGenerator.tileGenerator.Height=1;
         TileGenerator.tileGenerator.Depth =6;
+       
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+         //TileGenerator.tileGenerator.getMappingTile().showTileList();
     }
 }
