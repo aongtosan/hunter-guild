@@ -20,5 +20,6 @@ public class MappingTile
     public string logTileInfo(Vector2Int key){
         return "";
     }
+
     
 }
