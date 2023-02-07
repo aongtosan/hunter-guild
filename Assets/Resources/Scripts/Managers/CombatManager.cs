@@ -12,6 +12,7 @@ public class CombatManager : MonoBehaviour
     List<GameObject> unitList;
     List<GameObject> enemyList;
     public Tile selectedTile;
+    Vector2Int initCursorPosition;
     CombatPhase phase;
     enum CombatPhase{
         DEPLOY,
@@ -26,6 +27,7 @@ public class CombatManager : MonoBehaviour
     void Awake(){
         combatManager =this;
         cursor = new GameObject("Cursor");
+        initCursorPosition =new Vector2Int(0,0);
        
     }
     void Start()
@@ -36,21 +38,80 @@ public class CombatManager : MonoBehaviour
         TileGenerator.tileGenerator.Height=1;
         TileGenerator.tileGenerator.Depth =6;
     }
-
+    void moveCursor(){
+        if(Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.LeftArrow) ){
+            if(Input.GetKeyDown(KeyCode.RightArrow)){
+                Debug.Log("Right"); //++ increase horizontal cursor location
+                if(initCursorPosition.x + 1> TileGenerator.tileGenerator.Depth-1){
+                    initCursorPosition.x=0;
+                    Vector3  cursorPosition = TileGenerator.tileGenerator.getMappingTile().mapping[initCursorPosition].transform.position;
+                    cursor.transform.SetParent(TileGenerator.tileGenerator.getMappingTile().mapping[initCursorPosition].transform);
+                    cursor.transform.localPosition = new Vector3(0f,cursorPosition.y+1.50f,0f);
+                }else{
+                    initCursorPosition += new Vector2Int(1,0);
+                    Vector3  cursorPosition = TileGenerator.tileGenerator.getMappingTile().mapping[initCursorPosition].transform.position;
+                    cursor.transform.SetParent(TileGenerator.tileGenerator.getMappingTile().mapping[initCursorPosition].transform);
+                    cursor.transform.localPosition = new Vector3(0f,cursorPosition.y+1.50f,0f);
+                }
+            }
+            if(Input.GetKeyDown(KeyCode.LeftArrow)){
+                Debug.Log("Left"); //-- decrease horizontal cursor location
+                if(initCursorPosition.x - 1 < 0){
+                    initCursorPosition.x= TileGenerator.tileGenerator.Depth-1;
+                    Vector3  cursorPosition = TileGenerator.tileGenerator.getMappingTile().mapping[initCursorPosition].transform.position;
+                    cursor.transform.SetParent(TileGenerator.tileGenerator.getMappingTile().mapping[initCursorPosition].transform);
+                    cursor.transform.localPosition = new Vector3(0f,cursorPosition.y+1.50f,0f);
+                }else{
+                    initCursorPosition -= new Vector2Int(1,0);
+                    Vector3  cursorPosition = TileGenerator.tileGenerator.getMappingTile().mapping[initCursorPosition].transform.position;
+                    cursor.transform.SetParent(TileGenerator.tileGenerator.getMappingTile().mapping[initCursorPosition].transform);
+                    cursor.transform.localPosition = new Vector3(0f,cursorPosition.y+1.50f,0f);
+                }
+            }
+        }
+        if(Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.DownArrow) ){
+            if(Input.GetKeyDown(KeyCode.UpArrow)){
+                Debug.Log("Up"); //++ increase Vertical cursor location
+                 if(initCursorPosition.y + 1> TileGenerator.tileGenerator.Width-1){
+                    initCursorPosition.y=0;
+                    Vector3  cursorPosition = TileGenerator.tileGenerator.getMappingTile().mapping[initCursorPosition].transform.position;
+                    cursor.transform.SetParent(TileGenerator.tileGenerator.getMappingTile().mapping[initCursorPosition].transform);
+                    cursor.transform.localPosition = new Vector3(0f,cursorPosition.y+1.50f,0f);
+                }else{
+                    initCursorPosition += new Vector2Int(0,1);
+                    Vector3  cursorPosition = TileGenerator.tileGenerator.getMappingTile().mapping[initCursorPosition].transform.position;
+                    cursor.transform.SetParent(TileGenerator.tileGenerator.getMappingTile().mapping[initCursorPosition].transform);
+                    cursor.transform.localPosition = new Vector3(0f,cursorPosition.y+1.50f,0f);
+                }
+            }
+            if(Input.GetKeyDown(KeyCode.DownArrow)){
+                Debug.Log("Down"); //-- decrease Vertical cursor location
+                if(initCursorPosition.y - 1 < 0){
+                    initCursorPosition.y= TileGenerator.tileGenerator.Width-1;
+                    Vector3  cursorPosition = TileGenerator.tileGenerator.getMappingTile().mapping[initCursorPosition].transform.position;
+                    cursor.transform.SetParent(TileGenerator.tileGenerator.getMappingTile().mapping[initCursorPosition].transform);
+                    cursor.transform.localPosition = new Vector3(0f,cursorPosition.y+1.50f,0f);
+                }else{
+                    initCursorPosition -= new Vector2Int(0,1);
+                    Vector3  cursorPosition = TileGenerator.tileGenerator.getMappingTile().mapping[initCursorPosition].transform.position;
+                    cursor.transform.SetParent(TileGenerator.tileGenerator.getMappingTile().mapping[initCursorPosition].transform);
+                    cursor.transform.localPosition = new Vector3(0f,cursorPosition.y+1.50f,0f);
+                }
+            }
+        }
+    }
     // Update is called once per frame
     void LateUpdate()
     {
-        if( Input.GetAxis("Horizontal") * Time.deltaTime !=0f || Input.GetAxis("Vertical") * Time.deltaTime !=0f ){
-            Debug.Log("cursor move");
-        }
+        moveCursor();
         if(phase==CombatPhase.DEPLOY){
             TileGenerator.tileGenerator.getMappingTile().showTileList();
             phase = CombatPhase.PLAYER;
-            Vector3  cursorPosition = TileGenerator.tileGenerator.getMappingTile().mapping[new Vector2Int(0,0)].transform.position;
-            cursor.transform.SetParent(TileGenerator.tileGenerator.getMappingTile().mapping[new Vector2Int(0,0)].transform);
+            Vector3  cursorPosition = TileGenerator.tileGenerator.getMappingTile().mapping[initCursorPosition].transform.position;
+            cursor.transform.SetParent(TileGenerator.tileGenerator.getMappingTile().mapping[initCursorPosition].transform);
             
             //set cursor parent
-            Instantiate(cursorPrefab,TileGenerator.tileGenerator.getMappingTile().mapping[new Vector2Int(0,0)].transform).transform.SetParent(cursor.transform);
+            Instantiate(cursorPrefab,TileGenerator.tileGenerator.getMappingTile().mapping[initCursorPosition].transform).transform.SetParent(cursor.transform);
             cursor.transform.GetChild(0).transform.localScale = new Vector3 (0.5f,.5f,.5f);
             cursor.transform.localPosition = new Vector3(cursorPosition.x,cursorPosition.y+1.50f,cursorPosition.z);
             
