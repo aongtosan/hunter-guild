@@ -8,9 +8,6 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/SquenceGameTest.unity
     guid: 8d6eb01f3a75364488720257566feaac
-  - enabled: 0
-    path: 
-    guid: 00000000000000000000000000000000
   - enabled: 1
     path: Assets/Scenes/BasementTest.unity
     guid: 77fbc4f97afe7e040a53d1f3eb280f59
@@ -20,4 +17,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/WorldMapTest.unity
     guid: be59c5b10af893548a188c45710538fc
+  - enabled: 1
+    path: Assets/Scenes/CombatSceneTest.unity
+    guid: b142c3084f3c5a645a7f77ef47d9f91b
   m_configObjects: {}

@@ -3,10 +3,23 @@ using UnityEngine;
 
 public class MappingTile
 {
+ 
     public Dictionary<Vector2Int,GameObject> mapping;
-  
+    public List<Tile> tileInfoList;
     public MappingTile(){
-        mapping = new Dictionary<Vector2Int, GameObject>();
+        mapping = new Dictionary<Vector2Int, GameObject>();     
+        tileInfoList = new List<Tile>();
     }
-  
+    public void mergeInfo(Vector2Int key,int height){
+        Tile tileModel =new Tile(key,height);
+        tileInfoList.Add(tileModel);
+    }
+    public void showTileList(){
+        Debug.Log(tileInfoList.Count);
+    }
+    public string logTileInfo(Vector2Int key){
+        return "";
+    }
+
+    
 }

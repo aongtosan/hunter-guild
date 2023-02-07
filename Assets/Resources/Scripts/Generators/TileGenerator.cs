@@ -18,6 +18,7 @@ public class TileGenerator : MonoBehaviour
 
     MappingTile map;
 
+
     [SerializeField]
     Bioms.Biom biom;
     [SerializeField]
@@ -179,6 +180,7 @@ public class TileGenerator : MonoBehaviour
                      Tile tileInfo = new Tile();
                      tileInfo.Id = id;
                      map.mapping.Add(tileInfo.Id,tile);
+                     map.mergeInfo(tileInfo.Id,hillHeight);
                     //  Debug.Log(map.mapping[tileInfo.Id].name);
                 }
                 hillHeight = 0;
