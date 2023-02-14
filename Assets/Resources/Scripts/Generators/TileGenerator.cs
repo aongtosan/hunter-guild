@@ -166,6 +166,7 @@ public class TileGenerator : MonoBehaviour
                                 tile.transform.SetParent(row.transform);
                                 tile.transform.localPosition = tilePos;
                                 tile.transform.tag = "Tile";
+                                tile.layer=LayerMask.NameToLayer("Tile");
                                 Instantiate(tilePrefab,tile.transform.transform);
                         }else{
                                 tile = new GameObject(string.Format(Tile.TILE_NAME_FORMAT,i,j));
@@ -173,6 +174,7 @@ public class TileGenerator : MonoBehaviour
                                 tile.transform.SetParent(row.transform);
                                 tile.transform.localPosition = tilePos;
                                 tile.transform.tag = "Tile";
+                                tile.layer=LayerMask.NameToLayer("Tile");
                                 Instantiate(tileSubPrefab,tile.transform.transform);
                         }
                     }
