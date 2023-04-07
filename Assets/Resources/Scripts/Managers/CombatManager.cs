@@ -7,8 +7,10 @@ public class CombatManager : MonoBehaviour
     // Start is called before the first frame update
     public static CombatManager combatManager;
     Ray mouseRay;
+    // public LayerMask layerTarget;
     public GameObject cursorPrefab;
-    GameObject cursor;
+    public GameObject cursor;
+    GameObject selectedUnit;
     List<GameObject> unitList;
     List<GameObject> enemyList;
     public Tile selectedTile;
@@ -56,13 +58,21 @@ public class CombatManager : MonoBehaviour
         TileGenerator.tileGenerator.Width =6;
         TileGenerator.tileGenerator.Height=1;
         TileGenerator.tileGenerator.Depth =6;
+        //TileGenerator.tileGenerator.Biom = Bioms.Biom.GRASSFIELDLAND;
     }
     void moveCursor(){
         // for new input: mouse
-        // mouseRay = Camera.main.ViewportPointToRay(Input.mousePosition);
+         mouseRay = Camera.main.ViewportPointToRay(Input.mousePosition);
+         //Debug.Log(Input.mousePosition);
+         if(Input.GetMouseButton(0)){
+                if(Physics.Raycast(mouseRay,out RaycastHit hit ) ){
+                Debug.Log(hit.collider.gameObject.name);
+         }
+         }
+         
 
-        if(Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.LeftArrow) ){
-            if(Input.GetKeyDown(KeyCode.RightArrow)){
+        if(Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A) ){
+            if(Input.GetKeyDown(KeyCode.RightArrow ) || Input.GetKeyDown(KeyCode.D)){
                 Debug.Log("Right"); //++ increase horizontal cursor location
                 if(initCursorPosition.x + 1> TileGenerator.tileGenerator.Depth-1){
                     initCursorPosition.x=0;
@@ -76,7 +86,7 @@ public class CombatManager : MonoBehaviour
                     cursor.transform.localPosition = new Vector3(0f,cursorPosition.y+3.50f,0f);
                 }
             }
-            if(Input.GetKeyDown(KeyCode.LeftArrow)){
+            if(Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A)){
                 Debug.Log("Left"); //-- decrease horizontal cursor location
                 if(initCursorPosition.x - 1 < 0){
                     initCursorPosition.x= TileGenerator.tileGenerator.Depth-1;
@@ -91,8 +101,8 @@ public class CombatManager : MonoBehaviour
                 }
             }
         }
-        if(Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.DownArrow) ){
-            if(Input.GetKeyDown(KeyCode.UpArrow)){
+        if(Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S) ){
+            if(Input.GetKeyDown(KeyCode.UpArrow)|| Input.GetKeyDown(KeyCode.W)){
                 Debug.Log("Up"); //++ increase Vertical cursor location
                  if(initCursorPosition.y + 1> TileGenerator.tileGenerator.Width-1){
                     initCursorPosition.y=0;
@@ -106,7 +116,7 @@ public class CombatManager : MonoBehaviour
                     cursor.transform.localPosition = new Vector3(0f,cursorPosition.y+3.50f,0f);
                 }
             }
-            if(Input.GetKeyDown(KeyCode.DownArrow)){
+            if(Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S)){
                 Debug.Log("Down"); //-- decrease Vertical cursor location
                 if(initCursorPosition.y - 1 < 0){
                     initCursorPosition.y= TileGenerator.tileGenerator.Width-1;

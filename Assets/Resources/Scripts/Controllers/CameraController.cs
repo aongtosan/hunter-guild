@@ -23,10 +23,10 @@ public class CameraController : MonoBehaviour
     void changeRotation(){
         transform.LookAt(new Vector3(TileGenerator.tileGenerator.Depth/2f,0,TileGenerator.tileGenerator.Width/2f));
         if(Input.GetKey(KeyCode.Q)){
-             transform.Translate(Vector3.left * Time.deltaTime);
+             transform.Translate(Vector3.left * 10 *  Time.deltaTime);
         }
         if(Input.GetKey(KeyCode.E)){
-             transform.Translate(Vector3.right * Time.deltaTime);
+             transform.Translate(Vector3.right * 10 * Time.deltaTime);
         }
     }
 }
