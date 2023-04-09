@@ -23,8 +23,11 @@ public class MouseController : MonoBehaviour
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         Physics.Raycast(ray,out RaycastHit hit);
         if(hit.collider!=null) {
-            onHoverTile=hit.collider.gameObject.transform.parent.gameObject;
-            if()Debug.Log (hit.collider.gameObject.transform.parent.gameObject.GetComponent<TileController>().Tile.LocationX+","+hit.collider.gameObject.transform.parent.gameObject.GetComponent<TileController>().Tile.LocationY);
+            
+            if( onHoverTile == null || onHoverTile != hit.collider.gameObject.transform.parent.gameObject){
+                onHoverTile=hit.collider.gameObject.transform.parent.gameObject; 
+                Debug.Log (hit.collider.gameObject.transform.parent.gameObject.GetComponent<TileController>().Tile.LocationX+","+hit.collider.gameObject.transform.parent.gameObject.GetComponent<TileController>().Tile.LocationY);
+            }
         }
         // CombatManager.combatManager.cursor.transform.position = hit.point ;
         // if(detectPositionChange()){
