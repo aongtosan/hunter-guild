@@ -63,6 +63,10 @@ public class TileGenerator : MonoBehaviour
         set {depth = value;}
         get {return depth;}
     }
+    public int HillPercentage{
+         set {hillPercentage = value;}
+        get {return hillPercentage;}
+    }
     public Bioms.Biom Biom{
         set{biom = value;}
         get{return biom;}
@@ -88,6 +92,7 @@ public class TileGenerator : MonoBehaviour
         hillPercentageOld = hillPercentage;
         map = new MappingTile();
         tileGenerate();
+        map.addTileInfo();
     }
     /// <summary>
     /// It loads the prefabs of the tiles that will be used in the game
@@ -140,6 +145,7 @@ public class TileGenerator : MonoBehaviour
             map.mapping.Clear();
             loadTileData(biom);
             tileGenerate();
+            map.addTileInfo();
         }
     }
    /* Generating a random map. */
@@ -165,7 +171,7 @@ public class TileGenerator : MonoBehaviour
                     for(int k = 0 ; k<=hillHeight ; k++){// Ypos
                         if( k==0 || k== hillHeight){
                                 tile = new GameObject(string.Format(Tile.TILE_NAME_FORMAT,i,j));
-                               tile.AddComponent<MeshCollider>();
+                                tile.AddComponent<MeshCollider>();
                                 Vector3 tilePos = new Vector3 (i,k,j);
                                 tile.transform.SetParent(row.transform);
                                 tile.transform.localPosition = tilePos;

@@ -58,6 +58,7 @@ public class CombatManager : MonoBehaviour
         TileGenerator.tileGenerator.Width =6;
         TileGenerator.tileGenerator.Height=1;
         TileGenerator.tileGenerator.Depth =6;
+        TileGenerator.tileGenerator.HillPercentage=10;
         //TileGenerator.tileGenerator.Biom = Bioms.Biom.GRASSFIELDLAND;
     }
     void moveCursor(){
