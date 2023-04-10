@@ -310,6 +310,13 @@ public class TileGenerator : MonoBehaviour
     public MappingTile getMappingTile(){
         return map;
     }
+    public string getBiomName(){
+        switch(Biom){
+            case Bioms.Biom.DEFAULT : return "Default";
+            case Bioms.Biom.GRASSFIELDLAND : return "GrassLand";
+            default: return "";
+        }
+    }
 
     
 }

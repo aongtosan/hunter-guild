@@ -7,6 +7,10 @@ public class MouseController : MonoBehaviour
     // Start is called before the first frame update
     public static MouseController mouseController;
     private GameObject onHoverTile;
+    public GameObject OnHoverTile{
+        set{ onHoverTile = value;}
+        get{return onHoverTile;}
+    }
     Vector3 mouseLocationOld;
     void Awake(){
         mouseController = this ;
@@ -25,8 +29,8 @@ public class MouseController : MonoBehaviour
         if(hit.collider!=null) {
             
             if( onHoverTile == null || onHoverTile != hit.collider.gameObject.transform.parent.gameObject){
-                onHoverTile=hit.collider.gameObject.transform.parent.gameObject; 
-                Debug.Log (hit.collider.gameObject.transform.parent.gameObject.GetComponent<TileController>().Tile.LocationX+","+hit.collider.gameObject.transform.parent.gameObject.GetComponent<TileController>().Tile.LocationY);
+                OnHoverTile=hit.collider.gameObject.transform.parent.gameObject; 
+                // Debug.Log (OnHoverTile.GetComponent<TileController>().Tile.LocationX+","+OnHoverTile.GetComponent<TileController>().Tile.LocationY);
             }
         }
         // CombatManager.combatManager.cursor.transform.position = hit.point ;
