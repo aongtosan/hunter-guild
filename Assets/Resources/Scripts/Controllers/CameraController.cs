@@ -2,16 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/* It's a class that controls rotate movement the camera */
 public class CameraController : MonoBehaviour
 {
     // Start is called before the first frame update
     [SerializeField]
-    TileGenerator tileGen;
+    //TileGenerator.tileGeneratorerator TileGenerator.tileGenerator;
     void Start()
     {
-        // tileGen = GetComponent<TileGenerator>();
-        // transform.Translate( new Vector4(-tileGen.Width,3,tileGen.Height) ,Space.World);
-        int camLoc =  Mathf.Max(tileGen.Width,tileGen.Depth,tileGen.Height);
+        int camLoc =  Mathf.Max(TileGenerator.tileGenerator.Width,TileGenerator.tileGenerator.Depth,TileGenerator.tileGenerator.Height);
         transform.position = new Vector3 (-(camLoc-2),camLoc,-(camLoc-1));
         FindObjectOfType<Camera>().orthographicSize =camLoc-1;
     }
@@ -19,22 +18,15 @@ public class CameraController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // transform.Translate( new Vector4(-tileGen.Width,3,tileGen.Height) ,Space.World);
-        if(tileGen.detectChanges()){
-             int camLoc =  Mathf.Max(tileGen.Width,tileGen.Depth,tileGen.Height);
-            transform.position = new Vector3 (-(camLoc-2),camLoc,-(camLoc-1));
-            FindObjectOfType<Camera>().orthographicSize =camLoc-1;
-        }
         changeRotation();
-
-
     }
     void changeRotation(){
+        transform.LookAt(new Vector3(TileGenerator.tileGenerator.Depth/2f,0,TileGenerator.tileGenerator.Width/2f));
         if(Input.GetKey(KeyCode.Q)){
-
+             transform.Translate(Vector3.left * 10 *  Time.deltaTime);
         }
         if(Input.GetKey(KeyCode.E)){
-
+             transform.Translate(Vector3.right * 10 * Time.deltaTime);
         }
     }
 }

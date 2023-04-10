@@ -11,6 +11,7 @@ public class Tile
    int locationX;
    int locationY;
    int height;
+   
    public int LocationX{
         set{locationX = value;}
         get{ return locationX;}

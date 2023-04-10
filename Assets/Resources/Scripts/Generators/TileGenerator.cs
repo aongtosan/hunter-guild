@@ -63,7 +63,14 @@ public class TileGenerator : MonoBehaviour
         set {depth = value;}
         get {return depth;}
     }
-
+    public int HillPercentage{
+         set {hillPercentage = value;}
+        get {return hillPercentage;}
+    }
+    public Bioms.Biom Biom{
+        set{biom = value;}
+        get{return biom;}
+    }
     GameObject state;
     //define depth = axis Z
     //define height = axis y
@@ -85,6 +92,7 @@ public class TileGenerator : MonoBehaviour
         hillPercentageOld = hillPercentage;
         map = new MappingTile();
         tileGenerate();
+        map.addTileInfo();
     }
     /// <summary>
     /// It loads the prefabs of the tiles that will be used in the game
@@ -137,6 +145,7 @@ public class TileGenerator : MonoBehaviour
             map.mapping.Clear();
             loadTileData(biom);
             tileGenerate();
+            map.addTileInfo();
         }
     }
    /* Generating a random map. */
@@ -162,17 +171,23 @@ public class TileGenerator : MonoBehaviour
                     for(int k = 0 ; k<=hillHeight ; k++){// Ypos
                         if( k==0 || k== hillHeight){
                                 tile = new GameObject(string.Format(Tile.TILE_NAME_FORMAT,i,j));
+                                tile.AddComponent<MeshCollider>();
                                 Vector3 tilePos = new Vector3 (i,k,j);
                                 tile.transform.SetParent(row.transform);
                                 tile.transform.localPosition = tilePos;
                                 tile.transform.tag = "Tile";
+                                //tile.layer=LayerMask.NameToLayer("Tile");
+                                // tile.AddComponent<MeshCollider>();
                                 Instantiate(tilePrefab,tile.transform.transform);
                         }else{
                                 tile = new GameObject(string.Format(Tile.TILE_NAME_FORMAT,i,j));
+                                tile.AddComponent<MeshCollider>();
                                 Vector3 tilePos = new Vector3 (i,k,j);
                                 tile.transform.SetParent(row.transform);
                                 tile.transform.localPosition = tilePos;
                                 tile.transform.tag = "Tile";
+                                //tile.layer=LayerMask.NameToLayer("Tile");
+                                // tile.AddComponent<MeshCollider>();
                                 Instantiate(tileSubPrefab,tile.transform.transform);
                         }
                     }
@@ -193,9 +208,11 @@ public class TileGenerator : MonoBehaviour
                     Transform row = (map.mapping[k].transform.parent );
                     Vector2 id = k;
                     tile = new GameObject( string.Format(Tile.TILE_NAME_FORMAT,id.x,id.y) );
+                    tile.AddComponent<MeshCollider>();
                     tile.transform.SetParent(row);
                     tile.transform.localPosition = (map.mapping[k].transform.localPosition + new Vector3(0,0.75f,0) );
                     tile.transform.tag = "HalfTile";
+                    // tile.AddComponent<MeshCollider>();
                     Instantiate(tileHalfPrefab,tile.transform.transform); 
                     map.mapping[k] = tile;
                 } 
@@ -210,9 +227,11 @@ public class TileGenerator : MonoBehaviour
                         Debug.Log(map.mapping[k]);
                         Vector2Int id = k+(new Vector2Int(0,1));
                         tile = new GameObject( string.Format(Tile.TILE_NAME_FORMAT,id.x,id.y) );
+                        tile.AddComponent<MeshCollider>();
                         tile.transform.SetParent(row);
                         tile.transform.localPosition = (map.mapping[id].transform.localPosition + new Vector3(0,0.75f,0) );
                         tile.transform.tag = "SlopeTile";
+                        // tile.AddComponent<MeshCollider>();
                         Instantiate(tileSlopeHalfPrefab,tile.transform.transform); 
                         map.mapping[id] = tile;
                     }
@@ -223,11 +242,13 @@ public class TileGenerator : MonoBehaviour
                         Debug.Log(map.mapping[k]);
                         Vector2Int id = k+(new Vector2Int(1,0));
                         tile = new GameObject( string.Format(Tile.TILE_NAME_FORMAT,id.x,id.y) );
+                        tile.AddComponent<MeshCollider>();
                         tile.transform.SetParent(row);
                         tile.transform.localPosition = (map.mapping[id].transform.localPosition + new Vector3(0,0.75f,0) );
                         tile.transform.tag = "SlopeTile";
                         
                         Instantiate(tileSlopeHalfPrefab,tile.transform.transform); 
+                        // tile.AddComponent<MeshCollider>();
                         tile.transform.GetChild(0).transform.Rotate(0.0f, 90.0f, 0.0f, Space.World);
                         map.mapping[id] = tile;
                     }
@@ -270,9 +291,11 @@ public class TileGenerator : MonoBehaviour
                                                 Debug.Log(map.mapping[k]);
                                                 Vector2Int id = k+(new Vector2Int(0,1));
                                                 tile = new GameObject( string.Format(Tile.TILE_NAME_FORMAT,id.x,id.y) );
+                                                tile.AddComponent<MeshCollider>();
                                                 tile.transform.SetParent(row);
                                                 tile.transform.localPosition = (map.mapping[id].transform.localPosition + new Vector3(0,1f,0) );
                                                 tile.transform.tag = "SlopeTile";
+                                                
                                                 Instantiate(tileSlopePrefab,tile.transform.transform); 
                                                 map.mapping[id] = tile;
                                         }
@@ -286,6 +309,13 @@ public class TileGenerator : MonoBehaviour
     }
     public MappingTile getMappingTile(){
         return map;
+    }
+    public string getBiomName(){
+        switch(Biom){
+            case Bioms.Biom.DEFAULT : return "Default";
+            case Bioms.Biom.GRASSFIELDLAND : return "GrassLand";
+            default: return "";
+        }
     }
 
     
