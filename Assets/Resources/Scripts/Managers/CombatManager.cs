@@ -42,10 +42,7 @@ public class CombatManager : MonoBehaviour
         combatManager =this;
         cursor = new GameObject("Cursor");
         initCursorPosition =new Vector2Int(0,0);
-<<<<<<< features/combatManager
         
-=======
->>>>>>> staging
        
     }
     void Start()
@@ -69,7 +66,6 @@ public class CombatManager : MonoBehaviour
         //TileGenerator.tileGenerator.Biom = Bioms.Biom.GRASSFIELDLAND;
     }
     void moveCursor(){
-<<<<<<< features/combatManager
         // for new input: mouse
          mouseRay = Camera.main.ViewportPointToRay(Input.mousePosition);
          //Debug.Log(Input.mousePosition);
@@ -83,51 +79,29 @@ public class CombatManager : MonoBehaviour
         if(Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A) ){
             if(Input.GetKeyDown(KeyCode.RightArrow ) || Input.GetKeyDown(KeyCode.D)){
                 //Debug.Log("Right"); //++ increase horizontal cursor location
-=======
-        if(Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.LeftArrow) ){
-            if(Input.GetKeyDown(KeyCode.RightArrow)){
-                Debug.Log("Right"); //++ increase horizontal cursor location
->>>>>>> staging
                 if(initCursorPosition.x + 1> TileGenerator.tileGenerator.Depth-1){
                     initCursorPosition.x=0;
                     Vector3  cursorPosition = TileGenerator.tileGenerator.getMappingTile().mapping[initCursorPosition].transform.position;
                     cursor.transform.SetParent(TileGenerator.tileGenerator.getMappingTile().mapping[initCursorPosition].transform);
-<<<<<<< features/combatManager
                     cursor.transform.localPosition = new Vector3(0f,cursorPosition.y+3.50f,0f);
-=======
-                    cursor.transform.localPosition = new Vector3(0f,cursorPosition.y+1.50f,0f);
->>>>>>> staging
                 }else{
                     initCursorPosition += new Vector2Int(1,0);
                     Vector3  cursorPosition = TileGenerator.tileGenerator.getMappingTile().mapping[initCursorPosition].transform.position;
                     cursor.transform.SetParent(TileGenerator.tileGenerator.getMappingTile().mapping[initCursorPosition].transform);
-<<<<<<< features/combatManager
                     cursor.transform.localPosition = new Vector3(0f,cursorPosition.y+3.50f,0f);
                 }
             }
             if(Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A)){
                 //Debug.Log("Left"); //-- decrease horizontal cursor location
-=======
-                    cursor.transform.localPosition = new Vector3(0f,cursorPosition.y+1.50f,0f);
-                }
-            }
-            if(Input.GetKeyDown(KeyCode.LeftArrow)){
-                Debug.Log("Left"); //-- decrease horizontal cursor location
->>>>>>> staging
                 if(initCursorPosition.x - 1 < 0){
                     initCursorPosition.x= TileGenerator.tileGenerator.Depth-1;
                     Vector3  cursorPosition = TileGenerator.tileGenerator.getMappingTile().mapping[initCursorPosition].transform.position;
                     cursor.transform.SetParent(TileGenerator.tileGenerator.getMappingTile().mapping[initCursorPosition].transform);
-<<<<<<< features/combatManager
                     cursor.transform.localPosition = new Vector3(0f,cursorPosition.y+3.50f,0f);
-=======
-                    cursor.transform.localPosition = new Vector3(0f,cursorPosition.y+1.50f,0f);
->>>>>>> staging
                 }else{
                     initCursorPosition -= new Vector2Int(1,0);
                     Vector3  cursorPosition = TileGenerator.tileGenerator.getMappingTile().mapping[initCursorPosition].transform.position;
                     cursor.transform.SetParent(TileGenerator.tileGenerator.getMappingTile().mapping[initCursorPosition].transform);
-<<<<<<< features/combatManager
                     cursor.transform.localPosition = new Vector3(0f,cursorPosition.y+3.50f,0f);
                 }
             }
@@ -135,59 +109,30 @@ public class CombatManager : MonoBehaviour
         if(Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S) ){
             if(Input.GetKeyDown(KeyCode.UpArrow)|| Input.GetKeyDown(KeyCode.W)){
                 //Debug.Log("Up"); //++ increase Vertical cursor location
-=======
-                    cursor.transform.localPosition = new Vector3(0f,cursorPosition.y+1.50f,0f);
-                }
-            }
-        }
-        if(Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.DownArrow) ){
-            if(Input.GetKeyDown(KeyCode.UpArrow)){
-                Debug.Log("Up"); //++ increase Vertical cursor location
->>>>>>> staging
                  if(initCursorPosition.y + 1> TileGenerator.tileGenerator.Width-1){
                     initCursorPosition.y=0;
                     Vector3  cursorPosition = TileGenerator.tileGenerator.getMappingTile().mapping[initCursorPosition].transform.position;
                     cursor.transform.SetParent(TileGenerator.tileGenerator.getMappingTile().mapping[initCursorPosition].transform);
-<<<<<<< features/combatManager
                     cursor.transform.localPosition = new Vector3(0f,cursorPosition.y+3.50f,0f);
-=======
-                    cursor.transform.localPosition = new Vector3(0f,cursorPosition.y+1.50f,0f);
->>>>>>> staging
                 }else{
                     initCursorPosition += new Vector2Int(0,1);
                     Vector3  cursorPosition = TileGenerator.tileGenerator.getMappingTile().mapping[initCursorPosition].transform.position;
                     cursor.transform.SetParent(TileGenerator.tileGenerator.getMappingTile().mapping[initCursorPosition].transform);
-<<<<<<< features/combatManager
                     cursor.transform.localPosition = new Vector3(0f,cursorPosition.y+3.50f,0f);
                 }
             }
             if(Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S)){
                 //Debug.Log("Down"); //-- decrease Vertical cursor location
-=======
-                    cursor.transform.localPosition = new Vector3(0f,cursorPosition.y+1.50f,0f);
-                }
-            }
-            if(Input.GetKeyDown(KeyCode.DownArrow)){
-                Debug.Log("Down"); //-- decrease Vertical cursor location
->>>>>>> staging
                 if(initCursorPosition.y - 1 < 0){
                     initCursorPosition.y= TileGenerator.tileGenerator.Width-1;
                     Vector3  cursorPosition = TileGenerator.tileGenerator.getMappingTile().mapping[initCursorPosition].transform.position;
                     cursor.transform.SetParent(TileGenerator.tileGenerator.getMappingTile().mapping[initCursorPosition].transform);
-<<<<<<< features/combatManager
                     cursor.transform.localPosition = new Vector3(0f,cursorPosition.y+3.50f,0f);
-=======
-                    cursor.transform.localPosition = new Vector3(0f,cursorPosition.y+1.50f,0f);
->>>>>>> staging
                 }else{
                     initCursorPosition -= new Vector2Int(0,1);
                     Vector3  cursorPosition = TileGenerator.tileGenerator.getMappingTile().mapping[initCursorPosition].transform.position;
                     cursor.transform.SetParent(TileGenerator.tileGenerator.getMappingTile().mapping[initCursorPosition].transform);
-<<<<<<< features/combatManager
                     cursor.transform.localPosition = new Vector3(0f,cursorPosition.y+3.50f,0f);
-=======
-                    cursor.transform.localPosition = new Vector3(0f,cursorPosition.y+1.50f,0f);
->>>>>>> staging
                 }
             }
         }
