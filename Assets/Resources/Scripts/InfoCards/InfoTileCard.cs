@@ -18,6 +18,10 @@ public class InfoTileCard : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(CombatManager.combatManager.Phase == CombatManager.CombatPhase.DEPLOY){
+            gameObject.SetActive(false);
+        }
+        
         if(MouseController.mouseController.OnHoverTile!=null){
             location_text.GetComponent<TextMeshProUGUI>().text = string.Format("Location({0},{1})",
             MouseController.mouseController.OnHoverTile.GetComponent<TileController>().Tile.LocationX,

@@ -16,7 +16,11 @@ public class CombatManager : MonoBehaviour
     public Tile selectedTile;
     Vector2Int initCursorPosition;
     CombatPhase phase;
-    enum CombatPhase{
+    public CombatPhase Phase{
+        set{phase=value;}
+        get{return phase;}
+    }
+    public enum CombatPhase{
         DEPLOY,
         PLAYER,
         OPPONENT
