@@ -23,9 +23,10 @@ public class InfoTileCard : MonoBehaviour
             ui.gameObject.SetActive(false);
         }
         else{
-             ui.gameObject.SetActive(true);
+            ui.gameObject.SetActive(true);
         }
         if(MouseController.mouseController.OnHoverTile!=null){
+
             location_text.GetComponent<TextMeshProUGUI>().text = string.Format("Location({0},{1})",
             MouseController.mouseController.OnHoverTile.GetComponent<TileController>().Tile.LocationX,
             MouseController.mouseController.OnHoverTile.GetComponent<TileController>().Tile.LocationY); // "Location:("+MouseController.mouseController.OnHoverTile.GetComponent<TileController>().Tile.LocationX+","+MouseController.mouseController.OnHoverTile.GetComponent<TileController>().Tile.LocationY+")";
