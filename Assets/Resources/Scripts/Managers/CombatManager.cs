@@ -8,6 +8,7 @@ public class CombatManager : MonoBehaviour
     public static CombatManager combatManager;
     Ray mouseRay;
     // public LayerMask layerTarget;
+    int cursorCount;
     public GameObject cursorPrefab;
     public GameObject cursor;
     GameObject selectedUnit;
@@ -15,7 +16,7 @@ public class CombatManager : MonoBehaviour
     List<GameObject> enemyList;
     public Tile selectedTile;
     Vector2Int initCursorPosition;
-    CombatPhase phase;
+    public CombatPhase phase;
     public CombatPhase Phase{
         set{phase=value;}
         get{return phase;}
@@ -140,17 +141,21 @@ public class CombatManager : MonoBehaviour
     // Update is called once per frame
     void LateUpdate()
     {
-        moveCursor();
+       
         if(phase==CombatPhase.DEPLOY){
-            TileGenerator.tileGenerator.getMappingTile().showTileList();
-            phase = CombatPhase.PLAYER;
+            // TileGenerator.tileGenerator.getMappingTile().showTileList();
+            //phase = CombatPhase.PLAYER;
             Vector3  cursorPosition = TileGenerator.tileGenerator.getMappingTile().mapping[initCursorPosition].transform.position;
             cursor.transform.SetParent(TileGenerator.tileGenerator.getMappingTile().mapping[initCursorPosition].transform);
             
-            //set cursor parent
-            Instantiate(cursorPrefab,TileGenerator.tileGenerator.getMappingTile().mapping[initCursorPosition].transform).transform.SetParent(cursor.transform);
-            cursor.transform.GetChild(0).transform.localScale = new Vector3 (0.5f,.5f,.5f);
-            cursor.transform.localPosition = new Vector3(cursorPosition.x,cursorPosition.y+3.50f,cursorPosition.z);
+            //set cursor parent init cursor
+            if(cursorCount==0){
+                Instantiate(cursorPrefab,TileGenerator.tileGenerator.getMappingTile().mapping[initCursorPosition].transform).transform.SetParent(cursor.transform);
+                cursor.transform.GetChild(0).transform.localScale = new Vector3 (0.5f,.5f,.5f);
+                cursor.transform.localPosition = new Vector3(cursorPosition.x,cursorPosition.y+3.50f,cursorPosition.z);
+                cursorCount++;
+            }
+            
             
         }
         if(phase==CombatPhase.PLAYER){
@@ -159,6 +164,7 @@ public class CombatManager : MonoBehaviour
         if(phase==CombatPhase.OPPONENT){
             
         }
+        moveCursor();
 
     }
 }

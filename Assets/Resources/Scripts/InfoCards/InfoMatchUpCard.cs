@@ -5,6 +5,7 @@ using UnityEngine;
 public class InfoMatchUpCard : MonoBehaviour
 {
     // Start is called before the first frame update
+    public GameObject ui;
     void Start()
     {
         
@@ -14,7 +15,8 @@ public class InfoMatchUpCard : MonoBehaviour
     void Update()
     {
         if(CombatManager.combatManager.Phase == CombatManager.CombatPhase.DEPLOY){
-            gameObject.SetActive(false);
+            ui.gameObject.SetActive(false);
         }
+        
     }
 }
