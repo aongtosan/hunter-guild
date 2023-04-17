@@ -14,7 +14,6 @@ public class InfoUnitListCard : MonoBehaviour
     void Start(){
         for(int i=0;i<unitCount;i++){
             GameObject unitCard = new GameObject("UnitCard");
-            unitCard.AddComponent<RectTransform>();
             unitCard.AddComponent<CanvasRenderer>();
             unitCard.AddComponent<Image>();
             unitCard.gameObject.transform.parent = 
@@ -25,6 +24,9 @@ public class InfoUnitListCard : MonoBehaviour
             .gameObject.transform.GetChild(0);
         }
         
+    }
+    void showUnitInfo(){
+
     }
     void Update()
     {
