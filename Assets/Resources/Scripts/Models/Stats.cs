@@ -6,5 +6,6 @@ public class Stats
     int intelligent;
     int perception;
     int agility;
+    int move;
  
 }
