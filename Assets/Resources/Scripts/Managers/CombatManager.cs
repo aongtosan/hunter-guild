@@ -139,9 +139,6 @@ public class CombatManager : MonoBehaviour
         }
     }
     // Update is called once per frame
-    public void deployUnit(){
-
-    }
     void LateUpdate()
     {
        
