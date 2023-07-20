@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
+//using UnityEngine.UI;
 using UnityEngine.UIElements;
 using Image = UnityEngine.UI.Image;
 
@@ -16,6 +16,7 @@ public class InfoUnitListCard : MonoBehaviour
     public List<UIDocument> ui;
     void Start(){
         Debug.Log(ui[0].rootVisualElement.Q<Label>("header").text);
+
         // for(int i=0;i<unitCount;i++){
         //     GameObject unitCard = new GameObject("UnitCard");
         //     unitCard.AddComponent<CanvasRenderer>();
@@ -29,11 +30,25 @@ public class InfoUnitListCard : MonoBehaviour
         // }
         
     }
+
+    void OnEnable()
+    {
+        ui[0].rootVisualElement.Q<Button>("close-btn").RegisterCallback<ClickEvent>(ev => Debug.Log("close"));
+        // var uiDocument = GetComponent<UIDocument>();
+        // var rootVisualElement = uiDocument.rootVisualElement;
+ 
+        // frame = rootVisualElement.Q<VisualElement>("Frame");
+        // label = frame.Q<Label>("Label");
+        // button = frame.Q<Button>("Button");
+ 
+        // button.RegisterCallback<ClickEvent>(ev => SetText());
+    }
     void showUnitInfo(){
 
     }
     void Update()
     {
+        
         //   if(CombatManager.combatManager.Phase == CombatManager.CombatPhase.DEPLOY){
         //     ui.gameObject.SetActive(true);
         //     characterDataUi.gameObject.SetActive(true);
