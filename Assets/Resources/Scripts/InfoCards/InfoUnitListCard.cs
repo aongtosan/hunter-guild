@@ -33,7 +33,12 @@ public class InfoUnitListCard : MonoBehaviour
 
     void OnEnable()
     {
-        ui[0].rootVisualElement.Q<Button>("close-btn").RegisterCallback<ClickEvent>(ev => Debug.Log("close"));
+        ui[0].rootVisualElement.Q<Button>("close-btn").RegisterCallback<ClickEvent>(ev => 
+            {
+                Debug.Log("close");
+                ui[0].rootVisualElement.Q<GroupBox>("horiziontal").SetEnabled(false);
+            }
+        );
         // var uiDocument = GetComponent<UIDocument>();
         // var rootVisualElement = uiDocument.rootVisualElement;
  
@@ -46,6 +51,7 @@ public class InfoUnitListCard : MonoBehaviour
     void showUnitInfo(){
 
     }
+
     void Update()
     {
         
