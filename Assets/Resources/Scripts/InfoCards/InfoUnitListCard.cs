@@ -16,7 +16,7 @@ public class InfoUnitListCard : MonoBehaviour
     //public int unitCount;
     public List<UIDocument> ui;
     void Start(){
-        StyleSheet ss = (StyleSheet) EditorGUIUtility.Load("UnitInfoCardStyle.uss");
+        // StyleSheet ss = (StyleSheet) EditorGUIUtility.Load("UnitInfoCardStyle.uss");
 
         // for(int i=0;i<unitCount;i++){
         //     GameObject unitCard = new GameObject("UnitCard");

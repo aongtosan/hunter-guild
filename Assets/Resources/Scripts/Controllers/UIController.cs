@@ -23,7 +23,7 @@ public class UIController : MonoBehaviour
         ui[0].rootVisualElement.Q<Button>("close-btn").RegisterCallback<ClickEvent>(ev => 
             {
                 Debug.Log("close");
-                ui[0].rootVisualElement.Q<GroupBox>("horiziontal").style.visibility = Visibility.Hidden;
+                ui[0].rootVisualElement.Q<GroupBox>("menu-unit-list").style.visibility = Visibility.Hidden;
             }
         );
   

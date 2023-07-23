@@ -1025,7 +1025,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1260630097}
   - component: {fileID: 1260630099}
-  - component: {fileID: 1260630098}
+  - component: {fileID: 1260630100}
   m_Layer: 0
   m_Name: CombatMangerUIController
   m_TagString: Untagged
@@ -1048,20 +1048,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1260630098
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1260630095}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a05375cf0f04a5e43b005bcb0622fac0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ui:
-  - {fileID: 1260630099}
 --- !u!114 &1260630099
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1078,6 +1064,20 @@ MonoBehaviour:
   m_ParentUI: {fileID: 0}
   sourceAsset: {fileID: 9197481963319205126, guid: a132778901a3d504ebaf390ea08d2473, type: 3}
   m_SortingOrder: 0
+--- !u!114 &1260630100
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1260630095}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d72c97dcf1181dd45b7184fc3822a963, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ui:
+  - {fileID: 1260630099}
 --- !u!1 &1282328541
 GameObject:
   m_ObjectHideFlags: 0
