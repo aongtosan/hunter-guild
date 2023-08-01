@@ -1,7 +1,10 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/Resources/UIs/CombatMangerUI/UnitInfoCardStyle.uss?fileID=7433441132597879392&amp;guid=69c2a36b5645ec741ad08ad407513f5e&amp;type=3#UnitInfoCardStyle" />
-    <ui:GroupBox name="menu-unit-list" focusable="true" class="menu-unit-list">
-        <ui:Button display-tooltip-when-elided="true" name="close-btn" />
-        <ui:Label text="unit list" display-tooltip-when-elided="true" name="header" class="header" />
+    <ui:GroupBox name="wrapper" class="wrapper" >
+        <ui:GroupBox name="menu-unit-list" focusable="true" class="menu-unit-list">
+            <ui:Button display-tooltip-when-elided="true" name="close-btn" />
+            <ui:Label text="unit list" display-tooltip-when-elided="true" name="header" class="header" />
+        </ui:GroupBox>
+        <ui:GroupBox name="character-sheet" class="character-sheet" style="align-items: stretch;" />
     </ui:GroupBox>
 </ui:UXML>
